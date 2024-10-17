@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/JobApp/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MicroserviceTutorials/api-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MicroserviceTutorials/question-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MicroserviceTutorials/quiz-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MicroserviceTutorials/service-registry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/javaServlet/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/javaServlet/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quizApp/questionservice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quizApp/quizservice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/quizApp/serviceRegistry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springBootWeb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springDataJPA/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springDemo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springDemo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springEcom/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springOAuth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springSecurity/src/main/java" charset="UTF-8" />
+  </component>
+</project>
