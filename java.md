@@ -1,3 +1,419 @@
+# java
+
+## JVM
+    JVM makes the machine platform independent, with any machine having JVM intalled on it can run the java application, but JVM 
+    itself is platform dependent which means it has to created according to different operating systems.
+    JVM runs on the top of the operating system
+    JVM underatands Byte-code and not java code, so your compile converts your java code to byte-code which is executed by JVM
+
+# JRE
+    Java Runtime Environment contains the JVM which contains all the extra librarires we need for development purposes and a place
+    where we can write our code.
+    JRE also does byte-code checking which validates it and then it runs on the JVM
+
+# JDK
+    JDK contains both JVM and JRE for you.
+
+# STACK AND HEAP
+    Objects are stored in the heap memory and their reference are stored in stack wherever it is called.
+    for e.g -> Animal Lion = new Animal() now the object created through new keyword is stored in Heap memory but the Lion 
+    (reference variable of object) is stored in the stack memory of the function executing this line like:-
+    key->value
+    Lion->100, this 100 is the address of the object created in the Heap
+    The instance variable of the object has their memory stored in heap but methods are stored in stack, they are just 
+    defined in the Heap.
+
+# STRINGS
+    While creating the strings like String s = "piyush", the JVM looks for "piyush" in the (String constant pool) and if it finds
+    one already present then it return the reference to the string otherwise it'll create a new one in the Heap.
+    So once you create a string you can't change it you can only reference your string object to refer to any other string inside the Heap, so String Class creates immutable strings in java unlike int and double which are mutable.
+    To create mutable string we can use other classes like StringBuffer
+    StringBuffer s = new StringBuffer(), it creates a string with a buffer size of genereally 16 Bytes so that it can solve the problem of continuous space allocation
+
+# STATIC VARIABLES
+    Now what if you want to create a class with every object having the same name for a particular instance variable, suppose Apple wants to create a class for their mobile "Mobile" in which they want to create an Instance vaiable as "Brand" 
+    which will obviously have the same value as "Apple" for all the objects created from that class.
+    if we create a normal String Brand and use it then it'll create multiple variables for each object with the same value in the Heap which is a waste of memory, so to save the space here comes the static keyword.
+    static String Brand, now all the ojects will refer to the same address where Brand is initialised.
+    JVM has a different space for static variables neither in heap nor in stack, everytime the value of this variable is changed it'll reflect on all the objects of that class.
+    static variables are class variables and not object variables, so they should be called from the class 
+    Class.varible like Mobile.Brand
+
+# STATIC METHODS
+    Just like static variables we can create static methods which can be called with Class.Method 
+    we can't access instance variables inside a static method but we can use static variables inside static methods of that class.
+
+# STATIC BLOCK
+    What if you want to initialise the static variable created inside your Mobile Class, initalising it inside the constructor will initialise it everytime the 
+    constructor is being called for every object, so to avoid it we have a static block which is exectued only once no matter how many object of that class are created
+
+    static{
+    brand = "Apple";
+    }
+    this code is executed before the constructor this is because the class is loaded is called before object creation, we can verify it by manually loading the class
+    with Class.forName("your classname") and code inside static block will execute.
+
+    class Mobile{
+        String name;
+        int price;
+        static String brand;
+
+        static{
+            System.out.println("called brand");
+            brand = "Apple";
+        }
+
+        public Mobile(String name,int price){
+            System.out.println("called constructor");
+            this.name = name;
+            this.price = price;
+        }
+        public void show(){
+            System.out.println(name+": "+price+": "+brand);
+        }
+
+    }
+
+    class Hello{
+        public static void main(String a[]) throws ClassNotFoundException{
+            Class.forName("Mobile");
+
+            Mobile m = new Mobile("iphone 10",1000);
+            Mobile n = new Mobile("ipone 11",1100);
+            Mobile.brand = "Apple";
+            m.show();
+            n.show();
+        }
+    }
+
+# INHERITANCE
+    java works with single and multi-level inheritance but not with multiple interitance, that is a child having multiple parents
+
+# SUPER
+    By default the constructor method of every class has a super() method which calls the constructor of it's parent class and then continues with the code of the child class,
+    if you want to call the paramterised constructor then you have to explicitly mention the parameterised constructor of the parent class e.g super(int a);
+
+# PACKAGES
+    java.lang package is always imported as default in every java file
+    if you want to access a variable outside a package you have to make it public otherwise it will be default, which means it is accessible in files under the same package 
+    but not outside of the it.
+
+# POLYMORPHISM
+    Polymorphism means different behaviours for the same method, it is of two type compile-time and run-time, in compile-time the behaviour is decided during code compilation, for e.g Method Overloading 
+    add(int a,int b),add(int a,int b,int c) 
+    which method is to be run is decided at the compile time, 
+    now run-time is Method Overriding 
+    Class A-> add(int a){return a}, Class B extends A->add(int a){return a+10}
+    which method is to be run out of these two on calling ObjectOfB.add() is decided at the run-time
+
+# FINAL
+    The final keyword when used for variables declares them as constant e.g final int PI = 3.14;
+    final used with class makes it non-inheritable which means that no other class would be able to inherit from your defined final class e.g final class A, class B extends A will show an error.
+    final used with a method will stop method overrriding which means that another class can inherit from your class but can't overrite the menthod you declared as final e.g final int add();
+
+# ABSTRACT
+    Suppose we have a class called Car(), now all the cars extending this class like BMQ,Toyota would have a drive method which is specific to each and every type of car itself, 
+    so instead of writing something like this:- public void drive(){} in your Car class we can mark it as abstract method :- public abstract void drive;, now here we have just 
+    given the skeleton of the drive function and all the children classes will extend it.Remember marking the function abstract means you should also mark the parent class as 
+    abstract like := abstract class Car{} and it becomes mandatory for all the child classes to define the method drive() in their class otherwise it will throw an error.
+    You can't create an object of abstract class, you can have abstract method defined in abstract class it won't be an error.
+
+# ANONYMOUS INNER CLASS
+    Suppose you have a class A with a method like show(), now you want to override the show() method so what you'll do is extend this class. 
+    class B extends A{ public void show(){ /your implementation/ } }, '
+    but what if you want to use this method only once then there is no sense of creating a new class and overriding the method, 
+    instead here what you can do is you can create anonymous class from class A and change the implementation of method show() after you create a object of class A, here's the code:-
+    A obj = new A()
+    {
+        public void show(){
+            //your implementation.
+        }
+    }
+    obj.show(); //calling the new changed method.
+
+# INTERFACE
+     suppose you want to have an abstract class that will only contain abstract methods that means all the child classes will
+     have to define those methods, so you're kinda providing the skeleton of that class, here you can use interface instead of absract class.
+     Interface is not a class it's a design for creating classes.All the methods inside it are public abstract by default.
+     Interface can also contain variables which are final and static by default which means you can't change it.
+     interface Human{
+        int max_age = 100;
+        void walk();
+        void eat();
+     }
+     class Piyush implements Human{
+        public void walk(){}
+        public void eat(){}
+     }
+
+     interface can have multilevel implements, which means a class can implement 2 or more interfaces
+        interface Human{
+            int max_age = 100;
+            void walk();
+            void eat();
+        }
+        interface Lion{
+            void eat();
+            void hunt();
+        }
+        class Piyush implements Human,Lion{
+            public void walk(){}
+            public void eat(){}
+            public void hunt(){}
+        }
+
+        class Hello{
+            public static void main(String a[]){
+                Piyush piyush = new Piyush();
+                piyush.walk();
+                piyush.hunt();
+            }
+        }
+    We can create reference of a runnable and object of a class e.g Human obj = new Piyush();
+
+# FUNCTIONAL INTERFACE
+    single abstract method(SAM) or functional interface are the type of interfaces which contains only one abstract method, they are used in lambda expressions 
+    which can only work with functional interfaces.
+
+# LAMBDA EXPRESSIONS
+    It is used as a syntactical sugar to reduce the lines of code for functional interface e.g:-
+    A innerA = new A() 
+    {
+        public void show() {
+            System.out.println("inside inner hello by Anonymous inner class");
+        }
+    };
+    this can be written as
+    A innerA = () -> { System.out.println("inside inner hello by Anonymous inner class") };
+
+# BUFFERREADER
+    used for reading input from keyboard,network or a file, always remember to close it after the use otherwise it can cause memory leaks in java e.g bufferReader.close();
+
+# THREADS
+    Thread is a functionality through which you can execute multiple tasks at the same time, you have to create a object extending the thread class and define the run() method there so that thread.start() knows to execute run()
+    class A extends Thread{
+        public void run(){
+            // implementation
+        }
+    }
+    A obj = new A();
+    obj.start();
+
+# THREAD PRIORITY
+    you can customize the scheduling of your threads by assigning them priority, it ranges from 1 to 10, 10 is the maximum priority you can give and 5 is the default priority.
+    obj.setPriority(your_priority);
+    Different schedulers have different algorithms so we can just suggest to give our thread a priority but it might not relect in the desired way on the system.
+    Thread.sleep(miliseconds) can set the thread to a waiting stage.
+    you can create threads by extending the Thread class or even implementing the Runnable interface that is implemented by the Thread class to, the Runnable class is a functional interface with just one method declared run()(which runs the thread).
+
+    class A implements Runnable {
+        public void run() {
+            for (int i = 0; i < 10; i++) {
+                System.out.println("inside A");
+                try {
+                    Thread.sleep(5);
+                } catch (Exception e) {
+                    e.getStackTrace();
+                    // TODO: handle exception
+                }
+            }
+        }
+    }
+    public class Hello {
+        public static void main(String a[]) {
+            A myA = new A();
+            Thread t1 = new Thread(myA);
+            t1.start();
+        }
+    }
+
+# RACE CONDITION
+    If two threads increment or change the value of a variable at the same time or even execute the same method at the same time the operation will get done only once, this is called a race condition and to avoid it you have to mark your method as synchronized 
+    e.g public synchronized increment(){ count++ };
+    this will make sure that your function is called only once.
+    class A {
+        public int count;
+        public synchronized void increment() {
+            count++;
+        }
+    }
+
+    public class Hello {
+        public static void main(String a[]) throws InterruptedException {
+
+            A obj = new A();
+            Runnable a1 = new Runnable(){
+                public void run() {
+                    for (int i = 0; i < 10000; i++) {
+                        obj.increment();
+                    }
+                }
+            };
+            Runnable a2 = new Runnable(){
+                public void run() {
+                    for (int i = 0; i < 10000; i++) {
+                        obj.increment();
+                    }
+                }
+            };
+
+            Thread t1 = new Thread(a1);
+            Thread t2 = new Thread(a2);
+
+            t1.start();
+            t2.start();
+
+            t1.join();
+            t2.join();
+
+            System.out.println(obj.count);
+        }
+    }
+
+# JAR FILES
+    libraries in java are called jar files
+    using jdbc to connet with mysql you need an jar file for it, but for hibernates you need a jar file for it but hibernate itself is dependent upon multiple jar files which is called Transitive Dependencies.
+
+# MAVEN | GRADLE
+    Suppose you are working on spring 5 framework and you need other libraries like hibernates, so it might be possible that the version you are yousing of hibernates would not work with spring, for e.g spring 5 does not work with hibernate 4 
+    similarly there can be multiple conflicts with the version and dependencies of one library or framework to another one, managing that manually would be a cumbersome task, here comes the use of a tool which can help you with running,testing,debugging,packaging,deploying which are tools like maven,gradel etc.
+
+# GAV
+    GroupID->ArtifactID->VersionID
+    This will create a project ID that will be unique
+
+# EFFECTIVE POM
+    Effective pom can be refered as the parent of the pom.xml file, the chagnes you make to the pom.xml file are reflected on this file and this is the file that is read by maven for managing all the stuff and not the pom.xml file.
+    All the plugins are declared in effective pom or you can also call it as super pom.
+
+# JDBC
+    jdbc is a connector which is used to connect to databases like mySql,postgres,mongodb
+
+# IOC
+    supoose for example you create a spring boot project and you are managing data and other things through creating your objects bu yourself(using the new keyword), 
+    now what happens is every object has a life-cycle (creation->managing->destroying),so you'll always wish that something else could handle the complex task of object 
+    management for you so that you can solely focus on the business logic, this is achievable by taking the help of spring framework.This concept is called 
+    inversion of control, spring manages object's lifecycle through itself (creation->managing->destroying).
+    To achieve this we have something in spring called the Ioc container, spring will create this container and object will be stored in here which would be managed solely
+    by your spring framework. 
+
+# Beans
+    The object created by spring for IOC are called beans.
+
+# Dependency Injection
+    This is a design pattern that is used to achieve the Ioc concept, for example suppose you have a laptop class but this Laptop class is dependent on a Cpu class, in a normal
+    scenarion you will use a new keyword for creating objects of both laptop and cpu class somethinglike this.
+
+    //main application class
+    Laptop laptop = new Laptop();
+
+    //laptop class
+    public class Laptop{
+        private Cpu cpu;
+
+        Laptop(){
+            Cpu = new Cpu();
+        }
+    }
+
+    //cpu class
+    public class Cpu{
+
+    }
+
+    Doing this is fine, but as a developer this is a hectic process of managing the object's(laptop and cpu) lifecycle, we need to avoid this and we can easily achieve this 
+    with the help of DI.
+    Dependency injection will tell the spring framework to store and manage objects of these classes inside the Ioc container, then it'll be the duty of spring framework 
+    to inject the Cpu class inside the Laptop class when the object of laptop class is created.
+    How this DI works in spring boot is by annotating your class with @Component annotaion.
+
+# @Component
+    suppose you have a car class and you want spring to create and manage it for you through spring container, now what happens is that, you might have 100 classes in your project 
+    so spring doesn't wants to make it's work hectic by managing all 100 classes by itself, it says that you have tell him which classes you want to get created, managed and destroyed 
+    by spring, here is where annotaions comes into play.
+    You have to annotate your class with @Component to tell the spring framework to manage your object lifecycle by it.
+    Note that on running your application spring framework does a component scan of your entire application and it gets the idea that you want the Human class to be managed 
+    by spring through this @Component annotaion.
+
+
+    @Component //telling spring to manage the object of this class
+    public class Human {
+        public void walk(){
+            System.out.println("walking...");
+        }
+    }
+
+    @SpringBootApplication
+    public class ProjectApplication {
+
+        public static void main(String[] args) {
+            ApplicationContext context = SpringApplication.run(ProjectApplication.class, args); //getting context object to get bean
+            Human a = context.getBean(Human.class); //Dependency Injection of human class into main method
+            a.walk();
+        }
+    }
+    ApplicationContext is a way that you can communicate with Ioc container where beans(objects) are created and managed.
+
+# AUTOWIRING @Autowierd
+    Suppose your walk method in human class is dependent on another method walk() defined in body class then if you declare your body class and use it's object inside 
+    the human class the main method will throw an error like this.body is null.Exception in thread "main" 
+    java.lang.NullPointerException: Cannot invoke "com.springboot.project.Body.walk()". 
+    It happens because "this.body" is null because of the following reasons:-
+    -> Although we have used @Component in both clases but spring still doesn't know that we need to inject object of Body class inside the Human class.
+    -> We can't have the access of ApplicationContext anywhere except inside the main class, so we can't get the bean of body inside the human class.we can surely get
+       the object of Body inside our main class using context.getBean(Laptop.class,args) but not inside the Human class.
+    To solve it we need to use @Autowired annotaion so that during the component scan spring will know that Human class object needs to inject object 
+    of Body class.
+    This is the concept of wiring, we need to tell the spring that Human class is dependent on Body class so it's your responsibility 
+    to manage Body class's object lifecycle.
+
+    @Component
+    public class Body {
+        public void walk(){
+            System.out.println("legs are there and ready");
+        }
+    }
+
+    @Component
+    public class Human {
+
+        @Autowired //adding this annotation to tell spring about the wiring between these 2 classes
+        Body body;
+        public void walk(){
+            body.walk();
+        }
+    }
+
+# Application Context
+    This class or interface is used to talk to the IOC-container
+
+# Java code | XML File | Anootations
+    These are the three methods through which we can communicate with the spring framework.
+
+# Singelton vs Prototype
+    By default if you create 2 object from a class that is IOC and maintained by spring then both of the references will contain the reference to the same object that is singelton behaviour which is default behaviour also, but if you want to create a new object when each time the getBean method is called then you have to change the scope of that bean where it is declared this is called prototype.
+    For XML file:-
+    <bean id="human" class="com.spring.springDemo.Human" scope="singleton"></bean>
+    <bean id="human" class="com.spring.springDemo.Human" scope="prototype"></bean>
+    when singleton method is used the costructor is called(object creation) is on this line:-
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+    but when prototype method is used then object creation is done at the time of call to object creation:-
+        Human h = (Human) context.getBean("human");
+
+# Setters
+    Noww your object is getting created directly through IOC-container so what if you want to initialse your data using constructors, one way of doing it is by using <property> tag inside the bean, suppose i have a variable age inside human class so we can cofigure it like this
+    <bean id="human" class="com.spring.springDemo.Human" scope="prototype">
+        <property name="age" value="21">
+        </property>
+    </bean>
+    make sure you generate the setter for all the variables, to assign
+
+# Wiring in xml file
+    now to use one class inside the another we again need wiring so for using xml in spring we must wire them in property tag inside the bean of that class;
+
+# Field Injection | Constructor Injection | Setter Injection
+    @Autowired can be injected at all th three levels but it is preffered to you use it at the field part
+    
 # SERVELTS
     Servlet is a class that extends the capabilities of the servers and responds to the incoming requests. It can respond to any requests.Servlet is a web component that is deployed on the server to create a dynamic web page.
 
@@ -119,16 +535,19 @@
     The data we are sending from the server are java objects but on the postman we can see that the data is in the json format, so someone is in between who is converting java objects -> json object and that is the jackson library, by default it supports conversion for json but not any other format like xml, to convert data to xml format you have to install a library known as 
 
 # Spring ORM
-    ORM stands for object relational mapping. suppose you have want to create a student table which contains a rollNo, name ans marks, what you can do is you can create a student class with the same properties in your spring boot project and let any ORM tool map your class to a table in a relational database, this mapping will make a developers work easier.
-    one of such tools is Hibernate.
+    ORM stands for object relational mapping. suppose you have want to create a student table which contains a rollNo, name and marks, what you can do is you can create a 
+    student class with the same properties in your spring boot project and let any ORM tool map your class to a table in a relational database, this mapping will make a developers 
+    work easier.One of such tools is Hibernate.
     Every object of that class will map to a row in database, creating and saving a new object will create a new row in the table.
 
 # Spring data jpa
-    There are different tools for ORM like hibernate, and different projects might use another different tools, so now if you want to shift to some other ORM tool from hibernate, you might have to change the whole code, so can't there be any standardized specification on which all these ORM tools can agree on so that you don't have to change a lot of code in your project.
+    There are different tools for ORM like hibernate, and different projects might use another different tools, so now if you want to shift to some other ORM tool from hibernate, 
+    you might have to change the whole code, so can't there be any standardized specification on which all these ORM tools can agree on so that you don't have to change a lot of code in your project.
     Here comes JPA(java persistence API) which is an implementation on which all the other ORM tools work.
 
 # JPA vs JDBC
-    JPA is simpler, cleaner, and less labor-intensive than JDBC, SQL, and hand-written mapping. JPA is suitable for non-performance oriented complex applications. The main advantage of JPA over JDBC is that, in JPA, data is represented by objects and classes while in JDBC data is represented by tables and records. It uses POJO to represent persistent data that simplifies database programming. There are some other advantages of JPA
+    JPA is simpler, cleaner, and less labor-intensive than JDBC, SQL, and hand-written mapping. JPA is suitable for non-performance oriented complex applications. The main advantage of JPA over JDBC is that, 
+    in JPA, data is represented by objects and classes while in JDBC data is represented by tables and records. It uses POJO to represent persistent data that simplifies database programming. There are some other advantages of JPA
     JPA allows us to save and load Java objects and graphs without any DML language at all.
     It supports for cross-store persistence. It means an entity can be partially stored in MySQL and Neo4j (Graph Database Management System).
 
@@ -494,8 +913,115 @@
     By adding @EnableFeignClients to your springApplicaiton file, you're telling Spring to scan for interfaces that are annotated with @FeignClient and to generate proxy implementations for them.
     The @FeignClient annotation works by dynamically creating a proxy of the annotated interface at runtime. Each method in this interface corresponds to an HTTP request to the service specified in the annotation. When a method of the interface is called, Spring intercepts this call and translates it into an HTTP request, including URL mapping, request and response body conversion, and header setting. It then sends this request to the target service, processes the response, and returns it back as the return value of the method.
 
-   
+# Note
+    The spring-boot-starter-web already has the embedded tomcat server package so that we don't have to configure a server manually to run the project plus the jar 
+    file also has this server, we can run the spring boot project through it's jar file
+    //command to run jar
+    java -jar yourJarFile.jar
 
+# CommandLineRunner
+    The CommandLineRunner is an interface in Spring Boot. When a class implements this interface, Spring Boot will automatically run its run method after loading the application context. 
+    Usually, we use this CommandLineRunner to perform startup tasks like user or database initialization, seeding, or other startup activities.
+    Suppose you have url of your s3 buckets and aws or other services and you want to display them after your application startup, so you can override the run method of
+    commandLineRunner and log them.
+    -> Application starts.
+    -> Spring Boot initializes and configures beans, properties, and the application context.
+    -> CommandLineRunner (or ApplicationRunner) methods are executed.
+    -> The application is now ready to serve connections or requests.
 
+    Application can have multiple classes that implement CommandLineRunner, the order of execution can be specified using @Order Annotation.
+    Note — Don’t forget to annotate the class with @Component. this class must be registered in Spring context so that Spring can find this class and execute overridden run()
 
+# AutoConfiguration
+    https://medium.com/@AlexanderObregon/understanding-spring-boot-auto-configuration-and-customization-aee35fa2eef8
+    set your logging level to debug to see the Auto-configuration report
 
+# @Transaction
+    https://www.scaler.com/topics/spring-boot/transaction-management-in-spring-boot/
+    This annotation is used to make your database transactions more robust and safe.It achieves the atomicity and isolation
+
+    important
+    https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth#transactional-pitfalls
+
+# Persistence context
+    PersistenceContext is the main concept in jpa that is used to manage the lifecycle of different entities abd their interaction with database.We can think of it as a
+    cache or a simple hashmap also called as a "first-level cache".It has the following roles.
+
+    ->Tracking Entities: It keeps track of entity instances and their changes, ensuring consistency between the in-memory state and the database.
+    ->Synchronization: Any changes made to entities within the persistence context are automatically synchronized with the database at the appropriate time (e.g., during transaction commit).
+    ->Caching: It minimizes redundant database queries by caching entities already loaded in the persistence context.
+
+    Just like any other object, persistanceContext is also initialised at the starting of your spring application in the heap memory.
+    Why Do We Need a Persistence Context?
+
+    ->Automatic Change Tracking
+        The persistence context tracks changes made to entities automatically.
+        For example, if you update an entity's property, you don't need to explicitly call an update() method. The persistence context detects the change and ensures it's propagated to the database during the transaction commit.
+        java
+        Copy code
+        @Transactional
+        public void updateEntity(Long id) {
+            MyEntity entity = entityManager.find(MyEntity.class, id);
+            entity.setName("Updated Name"); // Change is tracked
+            // No explicit save/update call needed
+        }
+
+    ->Transactional Consistency
+        Entities managed by the persistence context remain consistent throughout a transaction. If the transaction rolls back, the changes are discarded.
+        This ensures data integrity and avoids partial updates.
+
+    ->Lazy Loading
+        The persistence context enables lazy loading of associations (e.g., @OneToMany, @ManyToOne) by deferring database queries until the related data is accessed.
+        Without the persistence context, lazy loading would not work seamlessly.
+        MyEntity entity = entityManager.find(MyEntity.class, 1L);
+        // Related data (e.g., a collection) is loaded lazily when accessed
+        List<RelatedEntity> related = entity.getRelatedEntities();
+
+    ->Caching
+        The persistence context acts as a first-level cache. If an entity is already loaded in the persistence context, subsequent queries for the same entity avoid hitting the database, improving performance.
+        MyEntity entity1 = entityManager.find(MyEntity.class, 1L); // Database query
+        MyEntity entity2 = entityManager.find(MyEntity.class, 1L); // Cache hit
+
+    ->Detached and Merged Entities
+        The persistence context provides mechanisms to detach entities (remove them from tracking) and merge them back (reattach them for updates).
+        // Detach
+        entityManager.detach(entity);
+
+        // Merge
+        MyEntity mergedEntity = entityManager.merge(entity);
+
+    ->Efficient Batching
+        The persistence context groups multiple changes into a single transaction and writes them to the database in one batch, improving performance.
+    
+    ->Declarative Transaction Management
+        The persistence context integrates seamlessly with Spring Boot's transaction management. When a method is annotated with @Transactional, the persistence context is automatically propagated or created, making it easy to manage transactions declaratively.
+
+# @PersistenceContext annotation
+    @PersistenceContext annotation takes care to create a unique EntityManager for every transaction (communication with the database). In a production application you can have multiple clients
+    calling your application in the same time. For each call, the application will create a new thread, will open/create a new transaction with the database and will assign 
+    a separate persistence context. Each thread, in this case, must use its own EntityManager.The persistence context is created when a transaction starts (via @Transactional)
+    and is flushed/closed when the transaction ends.Changes made to entities are automatically synchronized with the database at the end of the transaction.
+
+    @PersistenceContext
+    public EntityManager entityManager;
+    using @Autowired instead of @PersistenceContext for entity manager will create a single instance of it for the whole application and we don't want this.
+
+    Without persistence context it becomes your duty to manage the lifecycle of entity manager, you need to get an object of it using the EntityManagerFactory class and 
+    have to take care of opening and closing it.Refernce of the code is given below.
+
+    public class MyRepository {
+
+        private EntityManagerFactory entityManagerFactory;
+
+        public MyRepository() {
+            this.entityManagerFactory = Persistence.createEntityManagerFactory("my-persistence-unit");
+        }
+
+        public void saveEntity(MyEntity entity) {
+            EntityManager entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin(); // Begin transaction
+            entityManager.persist(entity);
+            entityManager.getTransaction().commit(); // Commit transaction
+            entityManager.close(); // Close EntityManager manually
+        }
+    }

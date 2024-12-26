@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("prototype")
+@Scope("prototype") //By default classes are singleton and if we want to work with multiple objects we need to add this annotation
 public class Student {
     private int rollNo;
     private String name;

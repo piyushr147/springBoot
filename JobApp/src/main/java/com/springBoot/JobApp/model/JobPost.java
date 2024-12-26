@@ -21,4 +21,24 @@ public class JobPost {
     private String postDesc;
     private Integer reqExperience;
     private List<String> postTechStack;
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public String getPostProfile() {
+        return postProfile;
+    }
+
+    public String getPostDesc() {
+        return postDesc;
+    }
+
+    public Integer getReqExperience() {
+        return reqExperience;
+    }
+
+    public List<String> getPostTechStack() {
+        return postTechStack;
+    }
 }

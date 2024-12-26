@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="serviceRegistry" />
-        <module name="question-service" />
         <module name="quizservice" />
         <module name="questionservice" />
         <module name="springSecurity" />
@@ -17,12 +16,15 @@
         <module name="springDemo" />
         <module name="JobApp" />
         <module name="springBootWeb" />
-        <module name="api-gateway" />
-        <module name="quiz-service" />
         <module name="javaServlet" />
-        <module name="service-registry" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-gateway" target="17" />
+      <module name="question-service" target="17" />
+      <module name="quiz-service" target="17" />
+      <module name="service-registry" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
