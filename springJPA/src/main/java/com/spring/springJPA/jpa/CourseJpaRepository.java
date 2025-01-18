@@ -1,39 +1,15 @@
 package com.spring.springJPA.jpa;
 
 import com.spring.springJPA.entity.Course;
-import com.spring.springJPA.entity.Review;
-import com.spring.springJPA.entity.Student;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import com.spring.springJPA.searchCriteria.course.CourseSearchCriteria;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
-@Repository
-@Transactional
-public class CourseJpaRepository {
+import java.util.List;
 
-    @PersistenceContext
-    EntityManager entityManager;
+public interface CourseJpaRepository extends JpaRepository<Course, Integer>, CourseSearchCriteria {
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    public Course findById(int id){
-        logger.info("EntityManager of CourseJpaRepository -> {}",System.identityHashCode(entityManager));
-        return entityManager.find(Course.class,id);
-    }
-
-    public void deleteById(int id) {
-        Course course = entityManager.find(Course.class,id);
-        entityManager.remove(course);
-    }
-
-    public void addReviewInCourse(int id,Review review){
-        logger.info("checking OneToMany and ManyToOne bidirectional flow in course and review class");
-        Course course = entityManager.find(Course.class,id);
-        course.addReview(review);
-        review.setCourse(course);
-        entityManager.persist(review);
-    }
+    @Query("SELECT c from Course c WHERE " + "LOWER(c.courseName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Course> findByKeyword(String keyword);
 }

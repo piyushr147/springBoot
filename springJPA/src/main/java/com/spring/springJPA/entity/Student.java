@@ -1,14 +1,16 @@
 package com.spring.springJPA.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NamedQueries(value = {
@@ -26,8 +28,14 @@ public class Student {
     @Column(nullable = false)
     private String name;
     private String location;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("student")
     private Identity identity;
+    @Setter(AccessLevel.NONE)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonBackReference
+    @JoinTable(name = "STUDENT_COURSE",joinColumns = @JoinColumn(name = "STUDENT_ID"),inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
+    private List<Course> courseList = new ArrayList<>();
     private LocalDateTime birthDate;
     @CreationTimestamp
     @Column(nullable = false)
@@ -40,6 +48,14 @@ public class Student {
         this.name = name;
         this.location = location;
         this.birthDate = birthDate;
+    }
+
+    public void addCourse(Course course){
+        courseList.add(course);
+    }
+
+    public void removeCourse(Course course){
+        courseList.remove(course);
     }
 
     @Override
