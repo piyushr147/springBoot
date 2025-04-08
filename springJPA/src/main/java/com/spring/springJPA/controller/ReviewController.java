@@ -27,22 +27,6 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.getById(reviewId),HttpStatus.OK);
     }
 
-    @PostMapping("/addReview")
-    public ResponseEntity<?> addReview(@RequestBody Review review){
-        try {
-            Review addedReview = reviewService.addReview(review);
-            return new ResponseEntity<>(addedReview,HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
-        }
-    }
-
-    @PutMapping("/updateReview")
-    public ResponseEntity<?> updateReview(@RequestPart Review review){
-        Review updatedReview = reviewService.updateReview(review);
-        return new ResponseEntity<>(updatedReview,HttpStatus.EXPECTATION_FAILED);
-    }
-
     @DeleteMapping("/deleteById/{id}")
     public ResponseEntity<String> deleteById(@PathVariable("id") int reviewId){
         boolean isDeleted = reviewService.deleteById(reviewId);
