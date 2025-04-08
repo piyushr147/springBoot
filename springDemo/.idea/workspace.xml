@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5e1ec6af-86b3-4314-b291-007b32be62cc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java.md" beforeDir="false" afterPath="$PROJECT_DIR$/../java.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/SpringJpaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/SpringJpaApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/entity/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/entity/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/entity/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/entity/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/jpa/CourseJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/jpa/CourseJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/jpa/StudentJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springJPA/src/main/java/com/spring/springJPA/jpa/StudentJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springJPA/src/test/java/com/spring/springJPA/SpringJpaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springJPA/src/test/java/com/spring/springJPA/SpringJpaApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;piyushr147&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/piyushr147/springBoot.git&quot;,
+    &quot;accountId&quot;: &quot;1b958229-6e4a-48e2-9947-6524e4b6ff82&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2lb8qWeo39V67wLpPJIKqLMa0EF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Piyush.Rawat/development/java/springBootWeb"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5e1ec6af-86b3-4314-b291-007b32be62cc" name="Changes" comment="" />
+      <created>1725437606874</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725437606874</updated>
+    </task>
+    <servers />
+  </component>
+</project>
