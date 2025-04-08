@@ -27,7 +27,7 @@ public class CacheConfig {
                         ResourcePoolsBuilder.newResourcePoolsBuilder()
                                 .offheap(10, MemoryUnit.MB)
                                 .build())
-                .withExpiry(ExpiryPolicyBuilder.timeToIdleExpiration(Duration.ofSeconds(100)))
+                .withExpiry(ExpiryPolicyBuilder.timeToIdleExpiration(Duration.ofSeconds(10)))
                 .build();
 
         CachingProvider cachingProvider = Caching.getCachingProvider();
