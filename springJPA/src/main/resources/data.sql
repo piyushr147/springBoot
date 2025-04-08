@@ -14,3 +14,5 @@ INSERT INTO Course(course_name,course_duration,creation_date,updated_date) VALUE
 INSERT INTO Course(course_name,course_duration,creation_date,updated_date) VALUES ('Python programmer',15,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 INSERT INTO Course(course_name,course_duration,creation_date,updated_date) VALUES ('Angular in 100 steps',20,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 INSERT INTO Course(course_name,course_duration,creation_date,updated_date) VALUES ('Java Multithreading',10,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
+INSERT INTO users(username,password,roles) VALUES ('piyush','Piyush@1234','["USER","ADMIN"]');
