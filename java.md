@@ -204,7 +204,8 @@
     obj.setPriority(your_priority);
     Different schedulers have different algorithms so we can just suggest to give our thread a priority but it might not relect in the desired way on the system.
     Thread.sleep(miliseconds) can set the thread to a waiting stage.
-    you can create threads by extending the Thread class or even implementing the Runnable interface that is implemented by the Thread class to, the Runnable class is a functional interface with just one method declared run()(which runs the thread).
+    you can create threads by extending the Thread class or even implementing the Runnable interface that is implemented by the Thread class to, the Runnable class is 
+    a functional interface with just one method declared run()(which runs the thread).
 
     class A implements Runnable {
         public void run() {
@@ -228,7 +229,8 @@
     }
 
 # RACE CONDITION
-    If two threads increment or change the value of a variable at the same time or even execute the same method at the same time the operation will get done only once, this is called a race condition and to avoid it you have to mark your method as synchronized 
+    If two threads increment or change the value of a variable at the same time or even execute the same method at the same time the operation will get done only once, 
+    this is called a race condition and to avoid it you have to mark your method as synchronized 
     e.g public synchronized increment(){ count++ };
     this will make sure that your function is called only once.
     class A {
@@ -275,15 +277,18 @@
     using jdbc to connet with mysql you need an jar file for it, but for hibernates you need a jar file for it but hibernate itself is dependent upon multiple jar files which is called Transitive Dependencies.
 
 # MAVEN | GRADLE
-    Suppose you are working on spring 5 framework and you need other libraries like hibernates, so it might be possible that the version you are yousing of hibernates would not work with spring, for e.g spring 5 does not work with hibernate 4 
-    similarly there can be multiple conflicts with the version and dependencies of one library or framework to another one, managing that manually would be a cumbersome task, here comes the use of a tool which can help you with running,testing,debugging,packaging,deploying which are tools like maven,gradel etc.
+    Suppose you are working on spring 5 framework and you need other libraries like hibernates, so it might be possible that the version you are yousing of hibernates 
+    would not work with spring, for e.g spring 5 does not work with hibernate 4, similarly there can be multiple conflicts with the version and dependencies of one 
+    library or framework to another one, managing that manually would be a cumbersome task, here comes the use of a tool which can help you with 
+    running,testing,debugging,packaging,deploying which are tools like maven,gradel etc.
 
 # GAV
     GroupID->ArtifactID->VersionID
     This will create a project ID that will be unique
 
 # EFFECTIVE POM
-    Effective pom can be refered as the parent of the pom.xml file, the chagnes you make to the pom.xml file are reflected on this file and this is the file that is read by maven for managing all the stuff and not the pom.xml file.
+    Effective pom can be refered as the parent of the pom.xml file, the chagnes you make to the pom.xml file are reflected on this file and this is the file that is 
+    read by maven for managing all the stuff and not the pom.xml file.
     All the plugins are declared in effective pom or you can also call it as super pom.
 
 # JDBC
@@ -391,7 +396,9 @@
     These are the three methods through which we can communicate with the spring framework.
 
 # Singelton vs Prototype
-    By default if you create 2 object from a class that is IOC and maintained by spring then both of the references will contain the reference to the same object that is singelton behaviour which is default behaviour also, but if you want to create a new object when each time the getBean method is called then you have to change the scope of that bean where it is declared this is called prototype.
+    By default if you create 2 object from a class that is in IOC and maintained by spring then both of the references will contain the reference to the same object that 
+    is singelton behaviour which is default behaviour also, but if you want to create a new object when each time the getBean method is called then you have to change 
+    the scope of that bean where it is declared this is called prototype.
     For XML file:-
     <bean id="human" class="com.spring.springDemo.Human" scope="singleton"></bean>
     <bean id="human" class="com.spring.springDemo.Human" scope="prototype"></bean>
@@ -401,7 +408,8 @@
         Human h = (Human) context.getBean("human");
 
 # Setters
-    Noww your object is getting created directly through IOC-container so what if you want to initialse your data using constructors, one way of doing it is by using <property> tag inside the bean, suppose i have a variable age inside human class so we can cofigure it like this
+    Now your object is getting created directly through IOC-container so what if you want to initialse your data using constructors, one way of doing it is by using 
+    <property> tag inside the bean, suppose i have a variable age inside human class so we can cofigure it like this
     <bean id="human" class="com.spring.springDemo.Human" scope="prototype">
         <property name="age" value="21">
         </property>
@@ -412,12 +420,16 @@
     now to use one class inside the another we again need wiring so for using xml in spring we must wire them in property tag inside the bean of that class;
 
 # Field Injection | Constructor Injection | Setter Injection
-    @Autowired can be injected at all th three levels but it is preffered to you use it at the field part
+    @Autowired can be injected at all the three levels but it is preffered to you use it at the field part
     
 # SERVELTS
-    Servlet is a class that extends the capabilities of the servers and responds to the incoming requests. It can respond to any requests.Servlet is a web component that is deployed on the server to create a dynamic web page.
+    Servlet is a class that extends the capabilities of the servers and responds to the incoming requests. It can respond to any requests.Servlet is a web component that
+    is deployed on the server to create a dynamic web page.
 
-    CGI technology enables the web server to call an external program and pass HTTP request information to the external program to process the request. For each request, it starts a new process and the creation is limited plus if the no of clients increases it takes more time for response, instead of this servlets use mutithreading for multiple request handling at the same time. Threads have many benefits over the Processes such as they share a common memory area, lightweight, cost of communication between the threads are low.
+    CGI technology enables the web server to call an external program and pass HTTP request information to the external program to process the request. For each request,
+    it starts a new process and the creation is limited plus if the no of clients increases it takes more time for response, instead of this servlets use mutithreading
+    for multiple request handling at the same time. Threads have many benefits over the Processes such as they share a common memory area, lightweight, cost of 
+    communication between the threads are low.
     public static void main( String[] args ) throws LifecycleException {
         System.out.println( "Hello World!" );
         Tomcat tomcat = new Tomcat();
@@ -427,24 +439,32 @@
     Now that dynamic(html,css) content can be send through servlet but we don't prefer this because it becomes bulky which would make it more time taking, instead we use JSPs (java servlet pages), servlets do their processing part and send the data to jsp where data is populated inside html pages and rendered to the client side.
 
 # NOTE
-    Normally to run a spring project we need a war file which has to be kept inside out externally downloaded tomcat, which is a server that runs out project but spring boot comes an embedded tomcat which creates the server and runs our jar file which starts our project.
+    Normally to run a spring project we need a war file which has to be kept inside out externally downloaded tomcat, which is a server that runs out project but spring
+    boot comes an embedded tomcat which creates the server and runs our jar file which starts our project.
 
 # MVC
     model,view,controller
-    so what happens is for eg a client asks for a page with dynamic content in our web application, so this request goes to the controller which is a servlet, this servlet fetched data from the model(database) and sends the data(object) to the view which might be react,angular or a jsp, this data gets populated inside the view which is sended as a response to the client where the html page is shown.
+    so what happens is for eg a client asks for a page with dynamic content in our web application, so this request goes to the controller which is a servlet, this 
+    servlet fetches data from the model(database) and sends the data(object) to the view which might be react,angular or a jsp, this data gets populated inside the view
+    which is sended as a response to the client where the html page is shown.
 
 # Controller
     The @Controller annotation used in spring boot is used to tell the spring framework that this is a servlet.
 
 # NOTE
-    Tomcat server does not work on jsp directly instead what it does is it converts the jsp into a servlet so that it can work with it, to convert it we use a dependency called tomcat jasper.
+    Tomcat server does not work on jsp directly instead what it does is it converts the jsp into a servlet so that it can work with it, to convert it we use a 
+    dependency called tomcat jasper.
 
 # Model
-    Model is an Interface in the spring core package under com.springframework.ui is used for transferring the data or attributes from our business logic to the rendering view pages. Its primary use is to add attributes to the model and can be simply viewed and accessed similar to the java.util.Map Interface.
+    Model is an Interface in the spring core package under com.springframework.ui is used for transferring the data or attributes from our business logic to the 
+    rendering view pages. Its primary use is to add attributes to the model and can be simply viewed and accessed similar to the java.util.Map Interface.
 
 # @ModelAttribute
-    The @ModelAttribute annotation in Spring MVC serves multiple roles, providing a robust solution for data mapping between a client's request and the server's model object. This annotation can be applied to method parameters, method return types, or even methods themselves
-    At its core, @ModelAttribute is designed for binding form data, query parameters, or even attributes in the session to Java objects. In simple terms, it binds an HTML form's input fields to the properties of a Java object. This is highly beneficial when dealing with forms that contain a large number of fields, as it eliminates the need to manually extract each form parameter.
+    The @ModelAttribute annotation in Spring MVC serves multiple roles, providing a robust solution for data mapping between a client's request and the server's model 
+    object. This annotation can be applied to method parameters, method return types, or even methods themselves
+    At its core, @ModelAttribute is designed for binding form data, query parameters, or even attributes in the session to Java objects. In simple terms, 
+    it binds an HTML form's input fields to the properties of a Java object. This is highly beneficial when dealing with forms that contain a large number of 
+    sfields, as it eliminates the need to manually extract each form parameter.
 
     @RequestMapping("/addAlien")
     public ModelAndView add(@ModelAttribute("alien1") Alien alien, ModelAndView mav){
@@ -692,7 +712,7 @@
     https://medium.com/@adigunolamide200/spring-security-for-beginners-part-2-userdetailsservice-and-database-communication-3661832624f9
 
     Authentication Provider
-    whenever you configure spring security it will provide you with a custom authentication provider, now the role of authentication provider is to authenticate your user.
+    whenever you configure spring security it will provide you with a custom authentication provider, now the role of authentication provider is to authenticate your user, you can have multiple authentication provider depending on your use case.
     you need to create a bean of this provider inside your custom security class which is securityConfig and return it's object.
     AuthenticationProvider is itself an interface so you need a class which implements this interface.
     Now there are different types of authentication in a website, it depends on which type of authentication you are using inside your application, here we are using database authentication so we will return an object of DaoAuthenticationProvider class which implements AuthenticationProvider interface.
@@ -713,9 +733,10 @@
             return null;
         }
     }
-    Now this UserDetails is an interface that spring tells it will work with for authentication, so we need need object of a class extending this interface.
+    UserDetailsService is an interface that has has a method loadUserByUsername, this method is responsible for fetching user data from the database and returns an object of UserDetails, you have to implement this method for working of DaoAuthenticationProvider.
     Here we need to create a new class called UserPrincipal that implements UserDetails and overrides all the methods.
-    But before that we need to create a UserRepository class as we are working with spring-data-jpa and declare a method to findByUsername which finds the user on the basis of username.Remember to autowire object of UserRepository in CustomUserDetailsService so that we can use this object to query the database.
+    But before that we need to create a UserRepository class as we are working with spring-data-jpa and declare a method to findByUsername which finds the user on the basis of username.
+    Remember to autowire object of UserRepository in CustomUserDetailsService so that we can use this object to query the database.
 
     @Repository
     public interface UserRepository extends JpaRepository<User,Integer> {
@@ -943,6 +964,25 @@
     important
     https://www.marcobehler.com/guides/spring-transaction-management-transactional-in-depth#transactional-pitfalls
 
+# Scope of a trasnaction
+    Using @Transactional on the method will increase the scope of to jpaTest1,which means the whole code inside the method would be either successfully exucte or will get
+    rolled back in case of any error.This annotaion creates a persistence context that acts as a first level cache and stores and manages all the entities in the method,
+    if there is no persistence context then no entity is managed and stored.
+    If we comment this for once and try to run this test then every line using entity manager will be in a seperate transaction and the 
+    changes won't get rolled back if any issue happens event at the last line of the code, as a developer we don't want our code to be so unreliable.
+    One more thing to note on commenting transactional annotation is that this code will throw an lazyIntitalizationException because  on calling student.getIdentity()
+    there is no session(persistentContext) currently going on, because it is not inside a transaction or getting executed under entity manger.
+    @Test
+    //@Transactional
+	public void jpaTest1(){
+		logger.info(String.valueOf(System.identityHashCode(entityManager)));
+		logger.info("test for one-to-one eager and lazy loading");
+		Student student = entityManager.find(Student.class,4);
+		logger.info("find by id response -> {}",student);
+		logger.info("getIdentity response -> {}",student.getIdentity());
+		logger.info("getIdentity response2 -> {}",student.getIdentity());
+	}
+
 # Persistence context
     PersistenceContext is the main concept in jpa that is used to manage the lifecycle of different entities abd their interaction with database.We can think of it as a
     cache or a simple hashmap also called as a "first-level cache".It has the following roles.
@@ -997,17 +1037,14 @@
         The persistence context integrates seamlessly with Spring Boot's transaction management. When a method is annotated with @Transactional, the persistence context is automatically propagated or created, making it easy to manage transactions declaratively.
 
 # @PersistenceContext annotation
-    @PersistenceContext annotation takes care to create a unique EntityManager for every transaction (communication with the database). In a production application you can have multiple clients
-    calling your application in the same time. For each call, the application will create a new thread, will open/create a new transaction with the database and will assign 
-    a separate persistence context. Each thread, in this case, must use its own EntityManager.The persistence context is created when a transaction starts (via @Transactional)
+    @PersistenceContext annotation takes care to create a unique EntityManager for every transaction (communication with the database). In a production application you can have multiple clients, calling your application in the same time. For each call, the application will create a new thread, will open/create a new transaction with the database and will assign a separate persistence context. Each thread, in this case, must use its own EntityManager.The persistence context is created when a transaction starts (via @Transactional)
     and is flushed/closed when the transaction ends.Changes made to entities are automatically synchronized with the database at the end of the transaction.
 
     @PersistenceContext
     public EntityManager entityManager;
     using @Autowired instead of @PersistenceContext for entity manager will create a single instance of it for the whole application and we don't want this.
 
-    Without persistence context it becomes your duty to manage the lifecycle of entity manager, you need to get an object of it using the EntityManagerFactory class and 
-    have to take care of opening and closing it.Refernce of the code is given below.
+    Without persistence context it becomes your duty to manage the lifecycle of entity manager, you need to get an object of it using the EntityManagerFactory class and have to take care of opening and closing it.Refernce of the code is given below.
 
     public class MyRepository {
 
@@ -1025,3 +1062,625 @@
             entityManager.close(); // Close EntityManager manually
         }
     }
+
+# Entity Manager
+    EntityManager is responsible for putting entity in persistence context, using persist() method, which is then tracked.Transaction is also associated with entity manager and entity is bound to this transaction.
+    Once the trasnaction is committed, changes are pushed to data source.
+    This class keeps a track of different entites, it makes the use of persistent context to track them it has a 1:1 relationship with persistance context, for every transaction if a new entity manager is created then a new persistent context is also created.
+    Any changes done to entity will reflect directly in our database and sometimes we don't even need to use the save method.Take this for example
+
+    @Repository
+    @Transactional
+    public class PersonJpaRepository {
+
+        @Autowired
+        public EntityManager entityManager;
+
+        public void playWithEntityManager(){
+            Person person = new Person("jaitly","faridabad",Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
+            entityManager.persist(person);//now entity manager will keep track of this object
+            person.setLocation("Nit");//this will automatically detect changes and will reflect it in database
+        }
+    }
+
+    All the changes that we do in our object during the transaction are executed at the last, so if we use detach() or clear() methods before manually using flush() method
+    manually then the changes won't reflect in DB.
+
+    Person person = new Person("jaitly","faridabad",Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
+
+    //now entity manager will keep track of this object
+    entityManager.persist(person);
+
+    //this will automatically detect changes and will reflect it in database at the end of transaction
+    person.setLocation("Nit");
+
+    person.setName("himanshu");
+    //Now changes to person will not reflect in database as entity manager is not keeping track of this object, so name and location will not change.
+    entityManager.detach(person);
+    //this will manually save the changes in database, but as person is detached it will not reflect in db.
+    entityManager.flush();
+
+    Person person1 = new Person("bhuwan","faridabad", Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
+    entityManager.persist(person1);
+    person1.setLocation("gurgaon");
+
+    //entity manager will not keep track of any object in this transaction and changes to person1 location will not reflect in DB.
+    entityManager.clear();
+
+    //now EM will start tracking the objects again and will reflect the changes in the DB.Using persist intead of merge will throw an error
+    //because persist() is designed for new entities, not for re-attaching existing entities.
+    person = entityManager.merge(person);
+    person1 = entityManager.merge(person1);
+
+    //This will take the value of person1 from database(primarykey) and set them back to person1, any changes to person1 will be backtracked.
+    entityManager.refresh(person1)
+
+# Lazy vs Eager loading
+    Suppose you have a one to one relationship between two entities Student and Identity
+    Now on executing a find_by_id query on student the student data is retrieved inluding a left join with Identity table(this is eager loading), now many times we might
+    need to get entites only when required in this case we need a lazy loading, this can be attained by using @OneToOne(fetch = FetchType.LAZY)
+
+    Eager:
+        select
+            s1_0.id,
+            s1_0.birth_date,
+            s1_0.creation_date,
+            i1_0.id,
+            i1_0.create_date_time,
+            i1_0.identity_type,
+            i1_0.number,
+            i1_0.update_date_time,
+            s1_0.location,
+            s1_0.name,
+            s1_0.updated_date 
+        from
+            student s1_0 
+        left join
+            identity i1_0 
+                on i1_0.id=s1_0.identity_id 
+        where
+            s1_0.id=?
+
+    Lazy:
+        select
+            s1_0.id,
+            s1_0.birth_date,
+            s1_0.creation_date,
+            s1_0.identity_id,
+            s1_0.location,
+            s1_0.name,
+            s1_0.updated_date 
+        from
+            student s1_0 
+        where
+            s1_0.id=?
+
+# Bidirectional mapping 
+    So far we have fetched records of Student having uni-directional OneToOne with Identity, this means the student table contains a column of identity(primary key), so
+    we can easily fetch identity from students, but what if we want to fetch the students from identity, as the relationship is OneToOne we might think of having a student 
+    column in Identity class but that is not a good practice of having both the tables having each other's primary key which could result in a circular dependency.
+    To avoid this we have a solution that is to use mappedby keyword in @OneToOne mapping on the Identity class.
+
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "identity")
+    private Student student;
+
+    Using mappedby keyword on identity class tells the spring that the owner side is student class and it contains an object of identity with the name "identity", this
+    mappedby name should match with your defined object name in the owner class that is important.
+    This mapping will not generate a student column inside the Identity table, but it gives a way for fetching the students from identity object.
+
+    @Test
+	public void jpaTest2(){
+		logger.info("checking Bidirectional mapping by fetching student(owner) from identity");
+		Identity identity = entityManager.find(Identity.class,1);
+		logger.info("Identity response -> {}",identity.toString());
+		//now fetching the student record, if everything is correct then a student sql query must be executed
+		logger.info("student response -> {}",identity.getStudent().toString());
+	}
+
+    Sql:
+        select
+            s1_0.id,
+            s1_0.birth_date,
+            s1_0.creation_date,
+            s1_0.identity_id,
+            s1_0.location,
+            s1_0.name,
+            s1_0.updated_date 
+        from
+            student s1_0 
+        where
+            s1_0.identity_id=?
+    Hence we got a query for student without having a column defined for student inside identity.
+    Kindly note the following default fetching strategies of mappings.
+    OneToOne -> Eager
+    ManyToOne -> Eager
+    OneToMany -> Lazy
+    ManyToMany -> Lazy
+
+# Isolation
+    https://ssudan16.medium.com/database-isolation-levels-explained-61429c4b1e31
+
+# Cascading in spring
+    https://medium.com/@himani.prasad016/jpa-hibernate-cascade-types-0490be19cc1f
+
+    CascadeType.PERSIST: Propagates the persist operation from parent to child.
+    CascadeType.MERGE: Propagates the merge operation from parent to child.
+    CascadeType.REMOVE: Propagates the remove operation from parent to child.
+    CascadeType.REFRESH: Propagates the refresh operation from parent to child.
+    CascadeType.DETACH: Propagates the detach operation from parent to child.
+    CascadeType.ALL: Applies all the above cascade operations.
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    CascadeType.ALL is a shortcut for applying all cascade operations, but it should be used cautiously, especially with REMOVE, as it can accidentally delete child
+    entities, you can use multiple cascading operations like this (cascade = {CascadeType.PERSIST,CascadeType.MERGE}).
+
+    The orphanRemoval = true attribute ensures that if a child entity is removed from the relationship, it is deleted from the database, take this example.
+
+        //department and employee have one to many relationship with orphanRemoval set to true.
+        Department department = new Department();
+        department.setName("IT");
+
+        Employee emp1 = new Employee();
+        emp1.setName("Alice");
+        emp1.setDepartment(department);
+
+        Employee emp2 = new Employee();
+        emp2.setName("Bob");
+        emp2.setDepartment(department);
+
+        department.getEmployees().add(emp1);
+        department.getEmployees().add(emp2);
+
+        departmentRepository.save(department);
+
+        //now removing a row from the list of employee in department will make no sense of having that orphan employee object in database.
+        department.getEmployees().remove(emp1); // Removes Alice from the employees list
+        departmentRepository.save(department); //save operation will also delete alice from Employee table.
+
+# Implementing serializable interface on entities while using caching 
+    When using Ehcache, objects stored in the cache may be serialized, depending on the configuration (e.g., if off-heap storage, disk persistence, or clustered caching
+    is enabled). Serialization ensures that the object can be safely written to and read from the cache.
+    If Ehcache is configured for distributed or clustered caching, the cache data might need to be transferred between different JVMs. Serialization allows the object 
+    to be transmitted as a byte stream and reconstructed on the other side.
+    In Ehcache:
+    Heap Storage Only: Serialization is not strictly required for heap-only caching, but it’s a good practice for future-proofing, especially if you plan to enable
+                        off-heap or disk storage later.
+    Disk Storage: If data is spilled to disk (e.g., when the heap cache is full), serialization is mandatory.
+    Distributed Cache: Serialization is essential when caching data across multiple JVMs in a distributed environment.
+    Other Scenarios
+    Persistence: Serializable objects can be saved to a file or database for later retrieval.
+
+# Circular dependencies bwtween entities and how to avoid them
+    https://medium.com/@AlexanderObregon/understanding-springs-jsonbackreference-and-jsonmanagedreference-annotations-783090468572
+
+# BeanDefinitionOverrideException
+    https://www.baeldung.com/spring-boot-bean-definition-override-exception
+
+# failed to lazily initialize a collection of role: com.spring.springJPA.entity.Course.reviewList: could not initialize proxy - no Session
+    This error occurs when you try to serialize an entity with a lazy-loaded collection into JSON, but the Hibernate session is already closed. Here's a detailed 
+    explanation and how you can resolve it:
+
+    Root Cause:-
+    Lazy Initialization: Hibernate delays the loading of @OneToMany, @ManyToMany, or @ElementCollection associations by default when FetchType.LAZY is used.
+    Session Issue: When the controller or service tries to return the entity (or its nested objects) as a JSON response, the collection hasn't been initialized 
+                    because the Hibernate session has already been closed.
+    Serialization Problem: Spring's Jackson JSON serializer attempts to serialize the lazy-loaded collection, but since it hasn't been initialized, it throws the error.4
+
+    Solution:-
+    1. Use @Transactional annotation on service layer method to keep the object under persistence context.
+    2. Set fetchType to Eager on @OneToMany annotaion to fetch the list of objects eagerly.
+    3. User DTOs.
+
+# Second level caching
+    V.V.V Important:-
+    https://freedium.cfd/https://dip-mazumder.medium.com/how-i-improved-database-performance-hibernate-caching-in-spring-boot-c1fcc83d0945
+
+    A second-level cache in Hibernate is a shared cache that operates at the session factory level, making it accessible across multiple sessions. It is used to store 
+    and manage entity data so that it can be efficiently retrieved without having to hit the database repeatedly.
+    The second-level cache stores entity data at a global level, making it accessible to all sessions.
+    Unlike 1st level cache we have to manually configure the second level cache, because 2nd level cache has no idea about what data needs to be cached we have to specify
+    it, we will implement a simple caching using EhCache.
+
+    Steps for implementation:
+    1-> Enable second level caching.
+    2-> Secify the caching framework - (EhCache in this case)
+    3-> Only cache what i tell you to cache.
+    4-> Specify the data to cache.
+
+    Reference site for our project, as we are using Jcache and by default Jcache uses ConcurrentHashMap as underlying cache store, but here we are using ehcache as the
+    underlying implementation.
+    https://refactorfirst.com/spring-boot-spring-cache-with-ehcache-3
+
+# Criteria API
+    To create advanced search operations, where user might provide multiple fields with or without combination we need to dynamically genreate the sql queries.
+    https://medium.com/@danaprata/jpa-criteria-api-quick-intro-6f2ce2462ee1
+
+# Note
+    setting fetch type to lazy doesn't means that the entites won't be shown in the response, i have two entites (Course and Review) and a one-to-many relationship 
+    between them, so as we know one-to-many has it's default type as lazy that means when we ask for all the courses in our getCourses api only the courses will be 
+    fetched because we are not explicilty mentioning any course.getReviews() method so it's obvious that no review will be shown in the response.
+    //screenshot
+    But here we see that reviews are still getting fetched, this is happening because if you're returning a List<Course> directly from the controller, tools like 
+    Jackson (used for JSON serialization) will try to access all fields of the Course entity which happens when serializing course object, including the reviews.
+    Since the getter for reviews is accessed, the lazy loading is triggered, fetching the reviews(course->getReviews()).
+
+# N+1 problem
+    Scenario:
+        Suppose you have two entities, Author and Book, where an Author can have multiple Books (one-to-many relationship).
+        You want to fetch all Authors along with their Books.
+        How the Problem Happens:
+
+    When you fetch the list of Authors, Hibernate executes one query to fetch all Authors.
+    Then, for each Author in the list, Hibernate executes one additional query to fetch the associated Books.
+    So, for N Authors, Hibernate will execute:
+        1 query to fetch all authors.
+        N queries to fetch books for each author.
+        Total = N+1 queries.
+
+    Why is this a Problem?
+        It is highly inefficient, especially with large datasets, as it results in excessive database queries and increased latency.
+        Each query adds network round-trips and processing overhead, which slows down the application.
+            
+    Suppose you have a AuthorController and inside this you have getAll method which fetches all the author from database,in this case hibernate will also fetch all 
+    the books written by all the authors even if the fetchType is LAZY because by default jackson library de-serializes the author object to send the API response 
+    and calls the getBooks() method which in turn triggers a sql query for all the authors and results in N+1 problem.
+
+    How can we solve this issue:
+
+        Use entity graphs:
+            https://medium.com/geekculture/resolve-hibernate-n-1-problem-f0e049e689ab
+        Use Eager Fetching (JOIN FETCH):
+            Modify the query to fetch the associated Books in a single query using a JOIN FETCH.
+                Example:
+                    List<Author> authors = session.createQuery(
+                        "SELECT a FROM Author a JOIN FETCH a.books", Author.class
+                    ).getResultList();
+                This generates 1 query that fetches both Authors and their Books together.
+                Configure @OneToMany or @ManyToOne Relationships:
+
+            Change the fetch type from LAZY (default) to EAGER.
+                Example:
+                    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+                    private List<Book> books;
+                Hibernate will automatically fetch associated Books when fetching Authors.
+                Use Hibernate's Batch Fetching:
+
+        Batch multiple queries into fewer queries.
+            Configure batch size using @BatchSize or Hibernate settings.
+            Example:
+                @BatchSize(size = 5)
+                private List<Book> books;
+            Instead of querying for each author individually, Hibernate fetches data in batches.
+
+        Second-Level Cache:
+            If data does not change frequently, consider using Hibernate's second-level cache to avoid unnecessary queries.
+            Use Criteria or HQL for Custom Queries:
+
+        Write optimized queries using Criteria API or HQL to fetch related data in one go.
+
+# LazyLoadingException in @Cacheable
+    Recently i was working with spring data jpa and caching, so before telling you about the exception and how to deal with it i'll make you go through my code
+
+# Jpa entity graph
+    Until JPA 2.0, to load an entity association, we usually used FetchType.LAZY and FetchType.EAGER as fetching strategies. This instructs the JPA provider to 
+    additionally fetch the related association or not. Unfortunately, this meta configuration is static and doesn’t allow switching between these two strategies at 
+    runtime.
+    The main goal of the JPA Entity Graph is to improve the runtime performance when loading the entity’s related associations and basic fields, it provide ways to 
+    dynamically configure your fetching strategy at the run time.
+
+    Why Use EntityGraph?
+        To solve the N+1 problem by fetching related entities in a single query.
+        To override the default fetch strategies defined in the entity mappings (@OneToMany, @ManyToOne, etc.).
+        To optimize queries by fetching only the data you need, reducing the amount of data fetched from the database.
+
+    Types of EntityGraph
+    There are two types of EntityGraph in JPA:
+        Named EntityGraph: Defined using annotations on the entity.
+        Dynamic EntityGraph: Defined programmatically at runtime.
+        https://www.baeldung.com/spring-data-jpa-named-entity-graphs
+
+# Jackson library
+    https://medium.com/@AlexanderObregon/serializing-and-deserializing-objects-in-spring-boot-a-comprehensive-guide-e58b3e321b92
+
+# @Modifying annotation
+    https://www.baeldung.com/spring-data-jpa-modifying-annotation
+
+# Input validation spring-data-validataion
+    implement or learn how to do input validation, it's quite easy so skipping
+    it contains annotations like.
+
+    CustomerDto class:-
+        @NotEmpty(message = "Name can not be a null or empty")
+        @Size(min = 5, max = 30, message = "The length of the customer name should be between 5 and 30")
+        private String name;
+
+        @Schema(
+                description = "Email address of the customer", example = "tutor@eazybytes.com"
+        )
+        @NotEmpty(message = "Email address can not be a null or empty")
+        @Email(message = "Email address should be a valid value")
+        private String email;
+
+        @Schema(
+                description = "Mobile Number of the customer", example = "9345432123"
+        )
+        @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+        private String mobileNumber;
+
+    use @Validated annotation on the controller(CustomerController) class so that your spring knows that it has to perform validation on CustomerDto, but doing this
+    will only let the spring know to do validation of the input fields, to actually perform this validation we need to use @Valid on the method where CoustomerDto is 
+    being passed as a parameter, something like this
+    public ResponseEntity<CustomerDto> saveCoustomer(@RequestBody @Valid CustomerDto)
+
+# Note
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    String password;
+    This will not set password field in response when serializing the User object.
+
+# Docker image
+
+    Docker commands:
+        🔹 Working with Containers
+            Command	Description
+            docker run <image>	Run a container from an image
+            docker run -d <image>	Run a container in the background (detached mode)
+            docker run -it <image> bash	Run a container and interact with it
+            docker ps	Show running containers
+            docker ps -a	Show all containers (including stopped ones)
+            docker stop <container_id>	Stop a running container
+            docker start <container_id>	Start a stopped container
+            docker restart <container_id>	Restart a container
+            docker rm <container_id>	Remove a container
+            docker logs <container_id>	Show container logs
+            docker exec -it <container_id> bash	Access a running container’s shell
+            docker inspect <container_id>	Get detailed info about a container
+            
+        🔹 Working with Images
+            Command	Description
+            docker images	List all available Docker images
+            docker pull <image>	Download an image from Docker Hub
+            docker push <image>	Push an image to Docker Hub
+            docker rmi <image_id>	Remove an image
+            docker tag <image> <repo>:<tag>	Tag an image
+            docker build -t <image_name> .	Build a Docker image from a Dockerfile
+
+
+    Using Dockerfile:
+        create a file named Dockerfile with no extension and add the following script commands.
+            # A JRE (Java Runtime Environment) image is required because it provides the necessary components to run Java applications,
+            FROM openjdk:21-jdk-slim
+
+            # Add metadata (Recommended over MAINTAINER)
+            LABEL maintainer="piyushkumar9818@gmail.com"
+
+            # copies the JAR file from the first stage to the second stage.
+            COPY target/accounts-0.0.1-SNAPSHOT.jar accounts-0.0.1-SNAPSHOT.jar
+
+            # This is necessary because containers don’t "boot" like a regular OS—they only run a single main process.
+            # Without this, the container would start and immediately exit, doing nothing.
+            ENTRYPOINT ["java","-jar","accounts-0.0.1-SNAPSHOT.jar"]
+
+            Build image
+                docker build {path of Dockerfile} -t docker_user/image_name:image_version
+                eg:- docker build . -t piyushrawat147/accounts:v1
+    
+    Using buildpacks(follows the standards enables caching and other optimization to create a light weight file):
+        Edit pom.xml plugin part and add this:
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>
+                            piyushrawat147/${project.artifactId}:v1
+                        </name>
+                        <builder>paketo-buildpacks/java</builder>
+                    </image>
+                </configuration>
+            </plugin>
+        
+        Generate docker image:
+            Run this command from the place where pom.xml file is present
+            mvn spring-boot:build-image
+    
+     Using Jib:
+        Edit pom.xml plugin part and add this:
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        
+        Generate docker image:
+            Run this command from the place where pom.xml file is present
+            mvn compile jib:dockerBuild
+
+    Create a docker container:
+        docker run -p 8081:8080 piyushrawat147/accounts:v1
+
+    Push docker image to docker hub:
+        docker image push docker.io/{account}/{image_name}:{image_version}
+
+# Docker compose 
+    Suppose you have 100 microservices, so it will be a leangthy and tiring task to build all images and run them, that's where docker comes into play, you just have to
+    generate a docker-compose.yml file on the root folder where all of your microservices folder resides and use a command from terminal to run the file and let it 
+    genereate containers and images for you, there's much more you can do with it we'll see it more.
+
+    docker-compose.yml
+
+    To run the file use this command:
+        docker compose up -d
+    To remove and stop all the containers:
+        docker compose down
+        docker compose stop
+
+# docker container command
+    create rabbitmq container:
+        docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
+            -it → Runs the container in interactive mode with a terminal (-i for interactive, -t for TTY).
+            --rm → Automatically removes the container once it stops.
+            --name rabbitmq → Assigns the name rabbitmq to the container.
+            -p 5672:5672 → Maps port 5672 (used for RabbitMQ messaging) from the container to the host machine.
+            -p 15672:15672 → Maps port 15672 (RabbitMQ Management UI) from the container to the host machine.
+            rabbitmq:3.12-management → Uses the RabbitMQ v3.12 image with the management plugin enabled.
+    create mysql container:
+        docker run -p 3306:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -d mysql
+            p for port, e for environment variable and image name = mysql
+    create redis container
+        docker run -p 6379:6379 --name redis -d redis
+
+# open feign client
+    This service is used in a microservice architecture with which several microservices can easily communicate with each other, unlike resttemplate fiengclient provides auto load balancing and it has a declarative way of using it.
+    https://medium.com/@AlexanderObregon/navigating-client-server-communication-with-springs-feignclient-annotation-70376157cefd
+
+# API gateway
+    https://medium.com/@roopa.kushtagi/the-role-of-api-gateway-in-microservices-architecture-5eca7ab0a2e4
+
+    Implement API gateway using spring cloud gateway:
+        https://medium.com/@ksaquib/exploring-api-gateways-with-spring-boot-ba00e8a08f50
+    
+    Implement dynaminc routing:
+        Using yml or programmatic approach will lead to re run of the applicaiton in case of a code change, instead we can store the route in database and fetch it on run time.
+        https://anjireddy-kata.medium.com/spring-cloud-gateway-dynamic-route-configuration-and-loading-from-the-datastore-a0637e6bd9b4
+
+# Global Filters
+    A Global Filter runs for every request going through the gateway — no matter what route or path it’s targeting. It’s perfect for logging, auth checks, metrics, etc.
+    To create a custom global filter for your api gateway you'll have to implement GlobalFilter interface and override two methods
+    -> filter(ServerWebExchange exchange,GatewayFilterChain chain)() method: Logic that runs before and after the route's processing.
+    -> getOrder(): Controls the order of execution among multiple filters. Lower number = higher priority.
+
+
+    https://wankhedeshubham.medium.com/spring-cloud-gateway-pre-and-post-global-filter-global-request-and-response-filter-1378bac33c0e
+
+# why spring cloud gateways is reactive in nature, what does "Reactive" mean?
+    Reactive programming is a programming style where, You react to data or events as they come.
+        -> You process things asynchronously, using streams (like a conveyor belt).
+        -> You don’t block threads while waiting for results (like HTTP calls or DB queries).
+        -> Think of it like working with a stream of requests — you don’t wait around for one to finish, you just keep reacting to events.
+        In Spring, this is powered by Project Reactor, using types like:
+            Mono<T> → async stream with 0 or 1 item
+            Flux<T> → async stream with 0 or many items
+
+    What does "Non-blocking" mean?
+        -> The system doesn’t pause or wait for slow operations (like HTTP calls, database queries, etc.)
+        -> Instead of using a thread that waits for the result (which blocks resources), it frees up that thread and reacts when the result is ready.
+        So, in a reactive, non-blocking system:
+            -> While Service A waits for a response from Service B…
+            -> The server thread can handle other requests in the meantime
+            -> When Service B responds, it resumes processing Service A’s request
+
+    Why does Spring Cloud Gateway use it?
+        High-concurrency traffic
+        Microservices communication
+        Fast, efficient request routing
+        Using reactive, non-blocking IO helps handle thousands of requests with fewer threads and lower memory usage.
+        Compare this to traditional (blocking) Spring MVC, where:
+        Each request occupies one thread
+        If it’s waiting for something (like a DB call), the thread just sits there
+        With 1000 slow requests, you need 1000 threads = heavy!
+
+    Example: Reactive vs Blocking
+    Blocking Style (Spring MVC):
+        String data = restTemplate.getForObject("http://slow-service", String.class);
+        // waits here until response returns
+
+    Reactive Style (Spring WebFlux):
+        Mono<String> data = webClient.get()
+            .uri("http://slow-service")
+            .retrieve()
+            .bodyToMono(String.class);
+        // doesn’t wait, returns immediately
+
+
+# Resiliency 
+    Implementing fault-tolerance and resiliency is important in our spring application, if a service becomes slow or unresponsive it becomes a bottleneck for other microservices dependednt on it, here we need to implement some fault tolerant mechanisms, one such library that implement these patterns is resillency4j.
+    https://medium.com/@alxkm/building-resilient-spring-boot-applications-with-resilience4j-cf8e5e7c2700
+
+    Suppose you are sending request to your microservice which is dependent on some other ms, now if that ms becomes unresponsive and no response is there for 10 seconds then for 10 seconds thread processing, memory and CPU utilization is being done which will be a waste of resources, 100 such requests will result in more waiting time, this would severly affect your edge server which will be getting more requests from client, in such case you might need to stop that microservice or return a default response or you might return a cached response, to perform this we need the Circuit-breaker pattern.
+
+# Circuit breaker
+    The microservices that faces downtime is generally for a temporary period of time, after that it might start working correctly but for that period of time there might be 1000s of request coming to it, implementing a circuit breaker will detect the impotency of that ms in the initial stage of failure and will help other requests to get a fast response(error,default or cache) which will eventually optimize and imporve the sevice by not letting the requests go to the failing ms.
+
+    Not only this circuit breaker will send some partial data to check if the affected ms is now up or not, if it's up then circuit breaker will go down or elese it will continue working. Circuit breaker pattern ensures fast response, fail gracefully, recover seamlessly.
+    
+    https://medium.com/spring-boot/exploring-resilience4j-enhancing-circuit-breaker-patterns-for-robust-applications-6cb8093d0b9
+
+# open feing service discovery and request creation.
+    Service Discovery (Finding the Location)
+    If you're using Spring Cloud with Eureka or any service registry (like Consul):    
+        -> You register your microservices with the registry.
+        -> Each service registers itself with a name (e.g., payment-service) and host:port.
+        -> Feign uses the service name you provide in @FeignClient(name = "payment-service").
+        -> Behind the scenes, it uses Ribbon (or Spring Cloud LoadBalancer) to discover the service location:
+        -> payment-service → [http://10.0.0.5:8082, http://10.0.0.6:8082]
+        -> If you're not using Eureka, Feign uses the url parameter directly (e.g., url="http://localhost:8082").
+
+    Feign Builds the Request
+        When you call a method like this paymentClient.getPaymentStatus(), Here's what happens:
+            a. Feign generates a dynamic proxy at runtime.
+            b. That proxy:
+            Builds the HTTP request using method + path (@GetMapping("/status"))
+            Adds parameters, headers, body (based on annotations like @RequestParam, @RequestBody, etc.)
+            c. Uses an HTTP client (like Apache HttpClient or OkHttp) under the hood to send the request.
+            d. Applies interceptors, circuit breakers, retries, and other filters if configured.
+
+    Circuit Breaker & Load Balancer Integration
+        If you’re using Spring Cloud LoadBalancer → It picks a healthy instance
+        Spring Cloud LoadBalancer (new default):
+            -> Uses round-robin by default
+            -> Pluggable strategies: random, weighted, zone-aware, etc.
+
+        Resilience4j → Wraps the call in a circuit breaker.
+            High-Level Flow (Feign + Eureka + Resilience4j)
+
+            Feign Client
+            │
+            └─> Service Name (e.g., "payment-service")
+                    │
+                    └─> Eureka/Discovery Client → Get instances
+                            │
+                            └─> LoadBalancer → Choose one instance
+                                    │
+                                    └─> Resilience4j CircuitBreaker wraps the call
+                                            │
+                                            └─> HTTP request via WebClient/RestTemplate
+                                                    │
+                                                    └─> Actual downstream service
+
+# Note
+    implementing CB on api gateway will override you CB inside your services.
+
+# Retry 
+    Retry enables you to handle transient errors efficiently. Transient errors are temporary and usually, the operation is likely to succeed if retried.
+    retry on service level:
+        Pros: Service has more context; retries can be fine-tuned (e.g., retry only on timeouts, not on validation errors).
+        Cons: No retries if the service is down/unreachable from the gateway.
+        https://anjireddy-kata.medium.com/architecture-and-design-101-resiliency-patterns-retry-mechanism-67eb7da51318
+    retry on gateway level:
+        Pros: Simpler service logic; centralized retry logic.
+        Cons: Less context — gateway doesn’t know if a failure is transient or fatal.
+        .route(p -> p
+						.path("/banking/cards/**")
+						.filters(filter ->
+								filter.rewritePath("banking/cards/?(?<remaining>.*)","/${remaining}")
+										.retry(retryConfig -> retryConfig
+												.setMethods(HttpMethod.GET)
+												.setRetries(3)
+												.setBackoff(Duration.ofMillis(100),Duration.ofMillis(1000),2,true))
+						)
+						.uri("lb://CARDS")
+				)
+    try to put retry operation on only on of these layers, not on both else for total retry operations will increase to (API retry x service retry).
+
+# Rate Limmiter
+    One of the imperative architectural concerns is to protect APIs and service endpoints from harmful effects, such as denial of service, cascading failure. or overuse of resources. Rate limiting is a technique to control the rate by which an API or a service is consumed. In a distributed system, no better option exists than to centralize configuring and managing the rate at which consumers can interact with APIs. Only those requests within a defined rate would make it to the API. Any more would raise an HTTP “Many requests” error.
+
+    
