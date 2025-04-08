@@ -6,17 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="springOAuth" />
+        <module name="springDemo" />
         <module name="serviceRegistry" />
+        <module name="JobApp" />
         <module name="quizservice" />
         <module name="questionservice" />
         <module name="springSecurity" />
+        <module name="javaServlet" />
         <module name="springEcom" />
         <module name="springDataJPA" />
-        <module name="springOAuth" />
-        <module name="springDemo" />
-        <module name="JobApp" />
-        <module name="springBootWeb" />
-        <module name="javaServlet" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +23,7 @@
       <module name="question-service" target="17" />
       <module name="quiz-service" target="17" />
       <module name="service-registry" target="17" />
+      <module name="springBootWeb" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
