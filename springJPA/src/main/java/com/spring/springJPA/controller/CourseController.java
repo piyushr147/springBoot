@@ -1,11 +1,12 @@
 package com.spring.springJPA.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.spring.springJPA.entity.Course;
+import com.spring.springJPA.entity.Review;
 import com.spring.springJPA.searchCriteria.course.CourseSearch;
 import com.spring.springJPA.service.CourseService;
-import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ public class CourseController {
     }
 
     @GetMapping("/getCourse/{id}")
+    @JsonIgnoreProperties(value = {"reviews","students"},allowGetters = true)
     public ResponseEntity<?> getById(@PathVariable("id") int courseId){
         Optional<Course> course =  courseService.getById(courseId);
         if(course.isEmpty()){
@@ -44,7 +46,7 @@ public class CourseController {
     }
 
     @PostMapping("/addCourse")
-    public ResponseEntity<?> addCourse(@RequestBody Course course){
+    public ResponseEntity<?> addCourse(@RequestBody @Valid Course course){
         try {
             return new ResponseEntity<>(courseService.addCourse(course),HttpStatus.OK);
         } catch (Exception e) {
@@ -61,10 +63,36 @@ public class CourseController {
         }
     }
 
+    @PostMapping("/addReview/{courseId}")
+    public ResponseEntity<?> addReview(@RequestBody @Valid Review review, @PathVariable("courseId") int courseId){
+        try {
+            boolean isAdded = courseService.addReview(review,courseId);
+            if(isAdded)
+                return new ResponseEntity<>("Review added successfully",HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Review couldn't be added",HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
     @PutMapping("/updateCourse")
-    public ResponseEntity<Optional<Course>> updateCourse(@RequestPart Course course){
+    public ResponseEntity<Optional<Course>> updateCourse(@RequestPart @Valid Course course){
         Course updatedCourse = courseService.updateCourse(course);
         return new ResponseEntity<>(Optional.of(updatedCourse),HttpStatus.OK);
+    }
+
+    @PutMapping("/updateReview/{courseId}")
+    public ResponseEntity<?> updateReview(@RequestPart @Valid Review review,@PathVariable("courseId") int courseId){
+        try {
+            boolean isAdded = courseService.updateReview(review,courseId);
+            if(isAdded)
+                return new ResponseEntity<>("Review edited successfully",HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Review couldn't be updated",HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
     @DeleteMapping("/deleteById/{id}")
