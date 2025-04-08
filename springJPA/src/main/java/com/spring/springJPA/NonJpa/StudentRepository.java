@@ -5,6 +5,7 @@ import com.spring.springJPA.entity.Identity;
 import com.spring.springJPA.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,10 +78,11 @@ public class StudentRepository {
         return student;
     }
 
+    @Transactional
     public void addCourseInStudent(Student student, Course course){
+        student = entityManager.merge(student);
+        course = entityManager.merge(course);
         student.addCourse(course);
         course.addStudent(student);
-        entityManager.merge(student);
-        entityManager.merge(course);
     }
 }
