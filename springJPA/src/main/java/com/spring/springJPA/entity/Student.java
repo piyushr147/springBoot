@@ -2,7 +2,6 @@ package com.spring.springJPA.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,21 +24,28 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(nullable = false)
     private String name;
+
     private String location;
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("student")
     private Identity identity;
+
     @Setter(AccessLevel.NONE)
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JsonBackReference
     @JoinTable(name = "STUDENT_COURSE",joinColumns = @JoinColumn(name = "STUDENT_ID"),inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
-    private List<Course> courseList = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>();
+
     private LocalDateTime birthDate;
+
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime creationDate;
+
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedDate;
@@ -51,11 +57,11 @@ public class Student {
     }
 
     public void addCourse(Course course){
-        courseList.add(course);
+        courses.add(course);
     }
 
     public void removeCourse(Course course){
-        courseList.remove(course);
+        courses.remove(course);
     }
 
     @Override

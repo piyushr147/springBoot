@@ -1,14 +1,13 @@
 package com.spring.springJPA.controller;
 
-import com.spring.springJPA.entity.Course;
 import com.spring.springJPA.entity.Identity;
 import com.spring.springJPA.entity.Student;
 import com.spring.springJPA.searchCriteria.student.StudentSearch;
 import com.spring.springJPA.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class StudentController {
     }
 
     @PostMapping("/addStudent")
-    public ResponseEntity<?> addStudent(@RequestBody Student student){
+    public ResponseEntity<?> addStudent(@RequestBody @Valid Student student){
         try {
             return new ResponseEntity<>(studentService.addStudent(student),HttpStatus.OK);
         } catch (Exception e) {
@@ -60,13 +59,13 @@ public class StudentController {
     }
 
     @PutMapping("/updateCourse")
-    public ResponseEntity<Optional<Student>> updateStudent(@RequestPart Student student){
+    public ResponseEntity<Optional<Student>> updateStudent(@RequestPart @Valid Student student){
         Student updatedStudent = studentService.updateStudent(student);
         return new ResponseEntity<>(Optional.of(updatedStudent),HttpStatus.OK);
     }
 
-    @PostMapping("/updateIdentity")
-    public ResponseEntity<?> editIdentity(@PathVariable("id") int studentId,@RequestBody Identity identity){
+    @PostMapping("/updateIdentity/{id}")
+    public ResponseEntity<?> editIdentity(@PathVariable("id") int studentId,@RequestBody @Valid Identity identity){
         try {
             return new ResponseEntity<>(studentService.addOrUpdateIdentity(studentId,identity),HttpStatus.OK);
         } catch (Exception e) {
