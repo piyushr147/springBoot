@@ -1,12 +1,10 @@
 package com.spring.springJPA;
 
-import com.spring.springJPA.entity.Course;
-import com.spring.springJPA.entity.Identity;
-import com.spring.springJPA.entity.Review;
-import com.spring.springJPA.entity.Student;
+import com.spring.springJPA.entity.*;
 import com.spring.springJPA.enums.IdentityType;
 import com.spring.springJPA.NonJpa.CourseRepository;
 import com.spring.springJPA.NonJpa.StudentRepository;
+import com.spring.springJPA.jpa.UserJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootApplication
 @EnableCaching
@@ -34,6 +34,8 @@ public class SpringJpaApplication implements CommandLineRunner{
 
 	@Autowired
 	public CourseRepository courseRepository;
+	@Autowired
+	public UserJpaRepository userRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -49,7 +51,14 @@ public class SpringJpaApplication implements CommandLineRunner{
 		saveStudentWithIdentity();
 		addReviewInCourse();
 		addStudentCourse();
+		addUser();
 	}
+
+	private void addUser() {
+		User user = new User(1,"piyush","Piyush@1234", List.of("User","ADMIN"));
+		userRepository.save(user);
+	}
+
 	public void saveStudentWithIdentity(){
 		Student student = new Student("chetan","delhi",Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
 		Identity identity = new Identity("EMDPR101", IdentityType.AADHAR_CARD);
@@ -68,6 +77,7 @@ public class SpringJpaApplication implements CommandLineRunner{
 		courseRepository.addReviewInCourse(course.getId(),review);
 	}
 
+	@Transactional
 	public void addStudentCourse(){
 		logger.info("checking student course ManyToMany relationship");
 		Student student = studentRepository.findById(3);
