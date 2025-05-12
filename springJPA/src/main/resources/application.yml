@@ -1,0 +1,61 @@
+spring:
+    application:
+        name: springJPA
+    datasource:
+        # Create your database
+        url: jdbc:h2:mem:testdb;NON_KEYWORDS=USER
+    h2:
+        console:
+            # This will give us a UI to interact with our H2 database at localhost:8080/h2-console
+            enabled: true
+    data:
+        jpa:
+            repositories:
+                bootstrap-mode: default
+    jpa:
+        # This will run data.sql file if true
+        defer-datasource-initialization: true
+        # Show SQL queries
+        show-sql: true
+        properties:
+            hibernate:
+                generate_statistics: on  # Turn Hibernate statistics on
+                format_sql: true         # Pretty print SQL queries
+                # batch_size: 10         # Use batching to optimize performance (uncomment to enable)
+                # cache.use_second_level_cache: true  # Implement second level cache (uncomment to enable)
+                # cache.region.factory_class: jcache
+            # javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+    cache:
+        cache-names: course
+
+# Set logging level
+logging:
+    level:
+        root: DEBUG
+        org:
+            hibernate:
+                stat: DEBUG
+                type: DEBUG
+                cache:
+                    spi: DEBUG
+            ehcache: DEBUG
+            springframework:
+                cache: DEBUG
+                security: DEBUG
+            net:
+                sf:
+                    ehcache: DEBUG
+
+# spring.main.allow-bean-definition-overriding: true
+
+# Swagger UI (uncomment to enable)
+# springdoc:
+#   api-docs:
+#     enabled: true
+#     path: /v3/api-docs
+#   swagger-ui:
+#     enabled: true
+#     path: /swagger-ui.html
+
+server:
+    port: 8083

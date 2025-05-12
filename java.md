@@ -1,18 +1,27 @@
 # java
 
 ## JVM
-    JVM makes the machine platform independent, with any machine having JVM intalled on it can run the java application, but JVM 
+    JVM makes the machine platform independent, with any machine having JVM installed on it can run the java application, but JVM 
     itself is platform dependent which means it has to created according to different operating systems.
     JVM runs on the top of the operating system
     JVM underatands Byte-code and not java code, so your compile converts your java code to byte-code which is executed by JVM
+    JVM converts the bytecode to machinecode, this machine code is platfor independent, jvm uses JIT(just in time) compiler to do this conversion. 
+
+    On your IDE write a java code and compile it using javac className.java -> this will return a bytecode which can be used inside any machine with jvm installed in it and will return the output, that's how jvm makes java platform independent.
 
 # JRE
-    Java Runtime Environment contains the JVM which contains all the extra librarires we need for development purposes and a place
-    where we can write our code.
+    Java Runtime Environment contains the JVM which contains all the class librarires we need for development purposes and a place where we can write our code.
     JRE also does byte-code checking which validates it and then it runs on the JVM
 
+    int a = Maths.java
+    Math library is already present for us to work with, how we get it automatically, this is because of JRE which comes with pre-installed class libraries.
+    Now your jvm bytecode from a mobile device used such libraries but running the bytecode on another machine like laptop with only JVM installed will not be able to convert it into machine code because it does not know about Math class, using JRE on another device makes it compatible to run all kind of bytecodes.
+
+    So JVM is necessary to compile bytecode to machine code and JRE is necessary for resoving class libraries.
+
 # JDK
-    JDK contains both JVM and JRE for you.
+    You have places to execute the java code but where can you write the java code at first place?
+    JDK contains both JVM and JRE for you and other features like debugger, PLs.
 
 # STACK AND HEAP
     Objects are stored in the heap memory and their reference are stored in stack wherever it is called.
@@ -396,8 +405,7 @@
     These are the three methods through which we can communicate with the spring framework.
 
 # Singelton vs Prototype
-    By default if you create 2 object from a class that is in IOC and maintained by spring then both of the references will contain the reference to the same object that 
-    is singelton behaviour which is default behaviour also, but if you want to create a new object when each time the getBean method is called then you have to change 
+    By default if you create 2 object from a class that is in IOC and maintained by spring then both of the references will contain the reference to the same object that is singelton behaviour which is default behaviour also, but if you want to create a new object when each time the getBean method is called then you have to change 
     the scope of that bean where it is declared this is called prototype.
     For XML file:-
     <bean id="human" class="com.spring.springDemo.Human" scope="singleton"></bean>
@@ -423,13 +431,9 @@
     @Autowired can be injected at all the three levels but it is preffered to you use it at the field part
     
 # SERVELTS
-    Servlet is a class that extends the capabilities of the servers and responds to the incoming requests. It can respond to any requests.Servlet is a web component that
-    is deployed on the server to create a dynamic web page.
+    Servlet is a class that extends the capabilities of the servers and responds to the incoming requests. It can respond to any request. Servlet is a web component that is deployed on the server to create a dynamic web page.
 
-    CGI technology enables the web server to call an external program and pass HTTP request information to the external program to process the request. For each request,
-    it starts a new process and the creation is limited plus if the no of clients increases it takes more time for response, instead of this servlets use mutithreading
-    for multiple request handling at the same time. Threads have many benefits over the Processes such as they share a common memory area, lightweight, cost of 
-    communication between the threads are low.
+    CGI technology enables the web server to call an external program and pass HTTP request information to the external program to process the request. For each request, it starts a new process and the creation is limited plus if the no of clients increases it takes more time for response, instead of this servlets use mutithreading for multiple request handling at the same time. Threads have many benefits over the Processes such as they share a common memory area, lightweight, cost of communication between the threads are low.
     public static void main( String[] args ) throws LifecycleException {
         System.out.println( "Hello World!" );
         Tomcat tomcat = new Tomcat();
@@ -1536,6 +1540,13 @@
             p for port, e for environment variable and image name = mysql
     create redis container
         docker run -p 6379:6379 --name redis -d redis
+    create keycloack container
+        docker run -p 7080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.2.0 start-dev
+        -e KC_BOOTSTRAP_ADMIN_USERNAME=admin	Sets the initial Keycloak admin username.
+        -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin	Sets the initial admin password.
+        quay.io/keycloak/keycloak:26.2.0	    Specifies the Keycloak image and version.
+        start-dev	                            Starts Keycloak in developer mode (simplified config, no HTTPS, no database setup).
+
 
 # open feign client
     This service is used in a microservice architecture with which several microservices can easily communicate with each other, unlike resttemplate fiengclient provides auto load balancing and it has a declarative way of using it.
@@ -1683,4 +1694,832 @@
 # Rate Limmiter
     One of the imperative architectural concerns is to protect APIs and service endpoints from harmful effects, such as denial of service, cascading failure. or overuse of resources. Rate limiting is a technique to control the rate by which an API or a service is consumed. In a distributed system, no better option exists than to centralize configuring and managing the rate at which consumers can interact with APIs. Only those requests within a defined rate would make it to the API. Any more would raise an HTTP “Many requests” error.
 
+# Centralized logging
+
+# Distributed tracing
+
+# OAuth grant types
+    OAuth 2.0 defines grant types as ways for clients to obtain access tokens to access resources on behalf of a user or themselves.
+    Think of a grant type as a "login flow" — a protocol that explains who is trying to get access, and how.
     
+    There are different flows (grant types) depending on:
+        Who the client is (user, app, machine)
+        How secure the environment is (browser, backend, mobile)
+    
+    Let's discuss some of these flow(Grant Types)
+    https://athiththan11.medium.com/oauth-2-grant-types-a-story-guide-582580a3c4c2
+
+    In our microservices architecture we are using the client credentials grant type which means that this is service-to-service flow, meaning there is no UI from where the resource owner can grant the access or permission for the client. 
+    Here the registered client will send the authentication request to the auth server which in this case we're using Keyclock, this auth server will have the registered clients with their roles and on the basis of it, it will grant the access token to the client, this access token will be used by the client(you can refer client as as external API/server) to query the resource server for resources.
+    Resource server is the server which actually contain the resources or services that the client needs, in our case we're using our gateway server as the resource server, this resource server will fetch the access token from the client request and the it asks the auth server to verify that token, based on it our request will be approved.
+
+# Microservice security using keyclock(auth server)
+    Let’s walk through how to implement microservices security using Keycloak step by step. This setup is widely used and integrates well with Spring Boot, Spring Security, or any service needing OAuth2/OIDC-based authentication and authorization.
+
+    Overview of What We’ll Build
+        Microservices secured by Keycloak, where:
+        Keycloak handles login, token issuance (JWT), user roles
+        Each microservice validates incoming requests using Keycloak tokens
+        Gateway (like Spring Cloud Gateway or API Gateway) authenticates and optionally authorizes requests
+
+    Step-by-Step Implementation
+    1. Set Up Keycloak
+        Run Keycloak with Docker:
+            docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.2 start-dev
+
+    2. Create Realm, Client & Roles in Keycloak
+        Create a Realm (e.g., myrealm)
+        Create a Client (e.g., my-microservice)
+        Set access type to confidential (or public for frontend)
+        Set valid redirect URIs if needed (for web apps)
+        Create Roles (e.g., USER, ADMIN)
+        Create Users and assign roles
+
+    3. Secure Spring Boot Microservice with Keycloak
+        Add dependencies:
+            <!-- pom.xml -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+        application.yml:
+            spring:
+            security:
+                oauth2:
+                resourceserver:
+                    jwt:
+                    issuer-uri: http://localhost:8080/realms/myrealm
+        SecurityConfig.java:
+            @EnableWebSecurity
+            public class SecurityConfig {
+
+                @Bean
+                public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                    http
+                        .authorizeHttpRequests(auth -> auth
+                            .requestMatchers("/admin/**").hasRole("ADMIN")
+                            .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                            .anyRequest().authenticated()
+                        )
+                        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+                    return http.build();
+                }
+            }
+    4. Use Tokens in Requests
+        Get a token using Keycloak:
+            curl -X POST http://localhost:8080/realms/myrealm/protocol/openid-connect/token \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "client_id=my-microservice" \
+            -d "username=myuser" \
+            -d "password=mypassword" \
+            -d "grant_type=password"
+        Call your service with the token:
+            curl http://localhost:8081/user/hello \
+            -H "Authorization: Bearer <access_token>"
+
+    Optional Additions
+    Spring Cloud Gateway to centralize auth
+    Use Keycloak adapters or OPA for fine-grained auth
+    Refresh tokens and login flow for frontends (Angular/React)
+
+# Resource server internal flow
+    First: What is a Resource Server?
+        In OAuth2, a Resource Server is any backend service that:
+        Receives access tokens (like JWTs) from clients.
+        Validates those tokens.
+        Authorizes access based on claims like roles or scopes.
+    In your case, your Gateway becomes a Resource Server when it:
+        Receives requests with an Authorization: Bearer <JWT> header.
+        Validates the token against Keycloak's realm (issuer).
+        Authorizes routes/endpoints based on the JWT's claims.
+
+    Internal Flow in Spring Security (Simplified)
+        Let’s assume this config exists:
+            spring:
+                security:
+                    oauth2:
+                    resourceserver:
+                        jwt:
+                        issuer-uri: http://localhost:8080/realms/demo-realm
+
+    Here's what happens step-by-step when the Gateway starts:
+
+    1️. Spring Boot Autoconfiguration kicks in
+        The class OAuth2ResourceServerAutoConfiguration is triggered.
+        This detects that you want a Resource Server, because:
+            The classpath has spring-security-oauth2-resource-server
+            The spring.security.oauth2.resourceserver.jwt config is present
+        This yaml configuration:
+            Registers the BearerTokenAuthenticationFilter into the SecurityFilterChain
+            Configures it to:
+                Look for Authorization: Bearer <token> header
+                Extract and pass the token to AuthenticationManager
+
+            When the BearerTokenAuthenticationFilter sees:
+                Authorization: Bearer eyJhbGciOiJIUz...
+                It Extracts the token and wraps it into a BearerTokenAuthenticationToken
+                    String token = request.getHeader("Authorization").substring(7);
+                    Authentication authRequest = new BearerTokenAuthenticationToken(token);
+                Delegates to AuthenticationManager.authenticate(...):
+                    Authentication authResult = authenticationManager.authenticate(authRequest);
+
+            When AuthenticationManager hits the authenticate method.
+                Spring registers a specialized AuthenticationManager that knows how to handle BearerTokenAuthenticationToken.
+                It does so by creating a JwtAuthenticationProvider and wiring it into the AuthenticationManager
+                Spring knows to register JwtAuthenticationProvider with the AuthenticationManager because of the .oauth2ResourceServer().jwt() configuration in your HttpSecurity, here refered as our yml config.
+                AuthenticationManager delegates to JwtAuthenticationProvider:
+                    This is where Spring’s provider-based architecture comes into play.
+                    The manager loops through a list of AuthenticationProviders.
+                    Finds one that supports BearerTokenAuthenticationToken, that would be JwtAuthenticationProvider.
+                    public boolean supports(Class<?> authentication) {
+                        return BearerTokenAuthenticationToken.class.isAssignableFrom(authentication);
+                    }
+
+            when JwtAuthenticationProvider.authenticate(...) is called
+                Jwt jwt = this.jwtDecoder.decode(token);
+                Calls the JwtDecoder to validate and parse the JWT:
+                Verifies the signature using Keycloak's public key (from JWK set)
+                Checks expiration, issuer, etc.
+            Create Authentication object and stores it in SecurityContextHolder to verify further requests.
+                JwtAuthenticationToken authToken = new JwtAuthenticationToken(jwt, authorities);
+                Converts claims (like realm_access.roles) to GrantedAuthoritys
+                Creates a fully authenticated object
+                The result is returned back through:
+                    SecurityContextHolder.getContext().setAuthentication(authResult);
+        SecurityFilterChain:
+            → [ CORS Filter ]
+            → [ CSRF Filter ]
+            → [ BearerTokenAuthenticationFilter ] ← This kicks in when `Authorization: Bearer ...` is found
+            → [ Authorization Filter ]
+
+    2️. JWT Decoder is Created
+        Spring boot creates a bean of type JwtDecoder. Internally:
+            //This url is generally read from application.yml file when you spring internally creates it.
+            JwtDecoder decoder = JwtDecoders.fromIssuerLocation("http://localhost:8080/realms/demo-realm");
+            This calls Keycloak’s /.well-known/openid-configuration endpoint.
+            It retrieves Keycloak’s public keys (JWK Set).
+            These keys are used to validate signed JWTs.
+
+    3️. SecurityFilterChain is Configured:
+        Spring configures a default SecurityFilterChain that includes:
+            An AuthenticationManager that knows how to parse and validate JWT tokens
+
+        A BearerTokenAuthenticationFilter which:
+            Reads the Authorization: Bearer <token> header
+            Extracts the token
+            Passes it to the JWT decoder
+            Converts the token into an Authentication object (JwtAuthenticationToken)
+            Stores it in the SecurityContextHolder
+
+    4️. Request Handling at Runtime
+        At runtime, when a request hits your Gateway:
+            The BearerTokenAuthenticationFilter detects the Authorization header.
+            It extracts the JWT token.
+            Passes it to the JwtDecoder (backed by Keycloak's JWK set).
+            If valid, it creates an Authentication object.
+            The request proceeds if the endpoint allows that role/authority.
+            If invalid (expired token, wrong signature), it returns 401 Unauthorized.
+
+    Summary: What Makes Gateway a Resource Server?
+        You included spring-boot-starter-oauth2-resource-server
+        You configured spring.security.oauth2.resourceserver.jwt.issuer-uri
+
+        Spring Security:
+            Automatically loads Keycloak's public key set
+            Adds a filter to validate JWTs
+            Converts JWT claims into Spring Authentication and GrantedAuthority
+            Enforces access rules via annotations or route rules
+
+# @EnableWebSecurityFlux
+    @EnableWebFluxSecurity activates Spring Security for reactive applications using Spring WebFlux instead of traditional (blocking) Spring MVC.
+    It does a few key things:
+        Registers a SecurityWebFilterChain bean
+        Enables reactive security filters (non-blocking)
+        Allows you to configure access control rules using a ServerHttpSecurity bean
+
+    Without @EnableWebFluxSecurity, Spring won’t know to apply security to your WebFlux routes. Your routes will:
+        Not be protected
+        Ignore any SecurityWebFilterChain config you write
+        won't inject ServerHttpSecurity bean for you to use
+
+# why spring won't automatically extract keycloak roles from access token for role based authorization
+    That’s a common (and great!) question — the short answer is:
+    Spring Security doesn't automatically know how to extract Keycloak roles, because Keycloak puts roles in a custom location in the JWT, not where Spring expects by default.
+    As we know that for role based access authorization of any jwt token spring looks for roles inside "authorization" column inside jwt.
+    Spring’s Default Expectation
+
+    Spring Security expects authorities (roles) in the authorities claim, like:
+        {
+        "authorities": ["ROLE_admin", "ROLE_user"]
+        }
+    But Keycloak puts roles under:
+        {
+            "realm_access": {
+                "roles": ["admin", "user"]
+            }
+        }
+    That’s not standard according to Spring's default config — so unless you customize it, Spring won’t look there.
+    Here's the internal flow:
+        Spring Security Default Flow (with JWT)
+            Spring Security with oauth2ResourceServer.jwt works like this:
+                HTTP Request Comes In with Authorization: Bearer <JWT> header.
+                BearerTokenAuthenticationFilter intercepts the request and pulls out the token.
+                The token is passed to a JwtDecoder, which:
+                    -> Verifies the signature using public keys from the issuer.
+                    -> Parses the JWT and builds a Jwt object containing claims.
+                    -> The JwtAuthenticationProvider takes that Jwt object and:
+                    -> Uses a JwtGrantedAuthoritiesConverter to extract roles.
+                    -> Wraps the result into a JwtAuthenticationToken.
+
+            By default, this converter looks for scope or scp or authorities claims to extract roles.
+            {
+                "authorities": ["ROLE_user"],
+                "scope": "read write"
+            }
+            So if you don’t have a claim named authorities, Spring doesn't find any roles = Access Denied.
+
+        Problem with Keycloak
+            Keycloak puts roles in a nested claim:
+            {
+                "realm_access": {
+                    "roles": ["admin", "user"]
+                }
+            }
+            Spring's default JwtGrantedAuthoritiesConverter doesn't know to look inside realm_access.roles, so:
+            No roles are extracted.
+            Access checks like hasRole("admin") will fail, because user has no authorities.
+
+        Enter KeycloakRoleConverter
+            You write your own Converter<Jwt, Collection<GrantedAuthority>>, like:
+                jwt.getClaim("realm_access").get("roles")
+                This converter now:
+                    -> Reads the realm_access.roles list from the JWT.
+                    -> Prefixes each with ROLE_ (Spring expects roles like ROLE_admin).
+                    -> Returns it as a collection of GrantedAuthority objects.
+
+    Modified Internal Flow with KeycloakRoleConverter
+        -> HTTP Request Comes In with Authorization: Bearer <JWT>.
+        -> BearerTokenAuthenticationFilter extracts token.
+        -> Token goes to JwtDecoder → verifies + parses → produces Jwt.
+        -> JwtAuthenticationProvider gets the Jwt.
+        -> It calls your custom converter: KeycloakRoleConverter.convert(jwt)
+        -> This reads realm_access.roles = ["admin", "user"]
+        -> Converts them to: [ROLE_admin, ROLE_user]
+        -> Those are used to create the Authentication object (typically JwtAuthenticationToken).
+        -> Now SecurityContext holds the authenticated user with authorities.
+        -> When your SecurityFilterChain checks .hasRole("admin"), it finds ROLE_admin → ✅ access granted.
+
+    How to Fix It
+        You need to tell Spring how to map Keycloak’s realm_access.roles into Spring authorities. you can do it in two ways.
+            1. Configure Spring to use our Keycloak converter
+            2. Define which roles are required to access the endpoints
+        we will continue with the 1st approach.
+        Step-by-step Role Mapping
+            1. Create a Role Converter
+                import org.springframework.core.convert.converter.Converter;
+                import org.springframework.security.core.GrantedAuthority;
+                import org.springframework.security.core.authority.SimpleGrantedAuthority;
+                import org.springframework.security.oauth2.jwt.Jwt;
+
+                import java.util.Collection;
+                import java.util.List;
+                import java.util.Map;
+                import java.util.stream.Collectors;
+
+                public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+
+                    @Override
+                    public Collection<GrantedAuthority> convert(Jwt jwt) {
+                        Map<String, Object> realmAccess = jwt.getClaim("realm_access");
+                        if (realmAccess == null || realmAccess.isEmpty()) {
+                            return List.of();
+                        }
+
+                        List<String> roles = (List<String>) realmAccess.get("roles");
+
+                        return roles.stream()
+                                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Spring needs "ROLE_" prefix
+                                .collect(Collectors.toList());
+                    }
+                }
+            2. Apply it to the JWT Decoder
+                import org.springframework.context.annotation.Bean;
+                import org.springframework.context.annotation.Configuration;
+                import org.springframework.security.oauth2.jwt.JwtDecoder;
+                import org.springframework.security.oauth2.jwt.JwtDecoders;
+                import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+
+                @Configuration
+                public class JwtSecurityConfig {
+
+                    @Bean
+                    public JwtDecoder jwtDecoder() {
+                        NimbusJwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation("http://localhost:7080/realms/spring-microservices");
+                        jwtDecoder.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
+                        return jwtDecoder;
+                    }
+                }
+        Result
+            Now when you use:
+            .antMatchers("/admin/**").hasRole("admin")
+            Spring will correctly detect ROLE_admin from the realm_access.roles in the token.
+
+# Event driven microservices
+    So what is an event? It is an incident that happens inside your microservices, which signifies a state transition or an update inside your system. Whenever an event takes place, we need to alert the concerned parties.
+    For example, take an e-commerce application inside Amazon website, whenever you place an order, the order microservice has to notify the delivery microservice, which is deployed inside the Amazon network. The communication between order microservice and the delivery microservice dosn't have to be an synchronous communication.
+    Instead, the order microservice as soon as the end user made a payment and order is confirmed, it is going to trigger an event which will act as a notification to the delivery microservice. 
+    In this scenario, the order microservice is just going to generate an event or trigger an notification. Apart from that, the order microservice is not going to wait for that delivery process to complete and the delivery microservice to give a successful response. The order microservice responsibility is to only send a notification to the delivery microservice. So this is a classic example of event driven microservice.
+    So if you see here, the communication is not going to happen synchronously. Instead the communication is going to happen with the help of asynchronous communication. Because the order microservice is not waiting for the successful response from the delivery microservice.Instead, it simply send a notification or alert and its job is completed.
+    In order to build the event driven microservices, we need to follow event driven architecture, producing and consuming events with the help of asynchronous communication event brokers and in the same process, we can leverage to fascinating projects available inside the spring cloud ecosystem, which are spring cloud function and spring cloud stream.
+
+# RabbitMq
+    RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that the letter carrier will eventually deliver the mail to your recipient. In this analogy, RabbitMQ is a post box, a post office, and a letter carrier.
+    https://medium.com/cwan-engineering/rabbitmq-concepts-and-best-practices-aa3c699d6f08
+    
+    example: 
+        https://www.cloudamqp.com/blog/part1-rabbitmq-for-beginners-what-is-rabbitmq.html
+
+    Core Concepts in RabbitMQ
+        1. Queue
+            A queue is a buffer that stores messages until a consumer retrieves them.
+            It’s the endpoint where messages reside until someone reads them.
+
+            Consumers listen to queues, not exchanges.
+
+            A queue has a name and can be durable, exclusive, and auto-delete.
+
+        Publisher --> Exchange --> Queue --> Consumer
+        2. Exchange
+            An exchange is like a message router 📡.
+            It receives messages from producers and routes them to queues based on rules defined by bindings.
+            Exchanges don't store messages; they just pass them along.
+
+        Types of exchanges:
+            Direct: Routes to queues with exact matching routing key
+            Topic: Routes using wildcard routing keys (*, #)
+            Fanout: Broadcasts to all bound queues, ignores routing keys
+            Headers: Routes based on message headers instead of routing keys
+
+        3. Binding
+            A binding is the link between an exchange and a queue, with optional routing criteria.
+
+            Think of it like:
+                “Queue A wants to receive messages from Exchange X with routing key = foo.bar”
+                Exchange (X) --binding key: "foo.bar"--> Queue A
+
+# How does my other services know from which queue of which exchange should their methods listen to?
+    You define the destination (exchange) and group (which maps to a queue) in application.yml
+    This acts as a binding contract between producer and consumers
+
+    Service A – producer:
+        streamBridge.send("outputA", message)
+
+        YAML:
+            spring.cloud.stream.bindings.outputA.destination=order.events
+            spring.cloud.stream.rabbit.bindings.outputA.producer.routing-key-expression='''order.created'''
+        If exchange have multiple queues the to route to a specific queue will push 
+
+    Service B – consumer:
+        @Bean
+        public Consumer<OrderCreatedEvent> orderListener() {
+            return event -> System.out.println("Received: " + event);
+        }
+
+        YAML:
+            spring.cloud.stream.bindings.orderListener.destination=order.events
+            spring.cloud.stream.bindings.orderListener.group=service-b
+            spring.cloud.stream.rabbit.bindings.orderListener.consumer.routing-key='order.created'
+
+        Spring Cloud Stream does this at runtime:
+            Declares an exchange named order.events (if not already there)
+            Declares a queue named: order.events.service-b 
+        Binds the queue to the exchange (with optional routing key)
+        Sets up a listener on that queue
+
+        Group keyword:
+            If you omit the group, Spring treats the consumer as anonymous and ephemeral:
+                A new, non-durable queue(auto-delete) is created each time.
+                Messages are broadcast to all anonymous consumers
+                The consumer receives messages only while it’s running
+                No message replay or durability
+                Good for:
+                    Stateless event listeners
+                    Fire-and-forget event-driven flows
+            If you use the this then:
+                The consumer is durable (will survive restarts)
+                RabbitMQ creates a durable queue named after the group
+                Messages are load-balanced across consumers in that group
+            
+                    With group | Without group
+            Durable consumer   |   Ephemeral consumer
+            Shared queue       | Individual temp queues
+            Load-balanced msgs | Broadcast to all
+            Good for scale-out | Good for dev/testing
+
+    Here's How the Binding Works:
+        Both services are pointed to the same exchange: order.events
+        The consumer uses a group (creates a durable, named queue):
+        → Queue name: order.events.service-b
+        The queue is automatically bound to the exchange using routing-key=order.created
+
+    So:
+    [ exchange: order.events ]
+        → binding → queue: order.events.service-b
+            → consumer: Service B
+
+# Service order a have two rest methods A and B that sends notifiaction to two queues queueA and queueB, from these two queues my service notifiaction reads messages   from these two queues with method readQueueA and readQueueB
+    Project 1: order-service
+        application.yml:
+            spring:
+                application:
+                    name: order-service
+
+            cloud:
+                stream:
+                    function:
+                        definition: sendToA;sendToB
+                    bindings:
+                        sendToA-out-0:
+                            destination: queueA
+                        sendToB-out-0:
+                            destination: queueB
+                    rabbit:
+                        bindings:
+                            sendToA-out-0:
+                                producer:
+                                    routing-key-expression: '''queueA'''
+                            sendToB-out-0:
+                                producer:
+                                    routing-key-expression: '''queueB'''
+
+            spring.cloud.stream.bindings.*
+                This is generic to Spring Cloud Stream — used to:
+                -> Bind functions (in-0, out-0) to destinations (topics, queues, exchanges)
+                -> Define basic stream-level info like group, destination, and contentType
+                -> This tells Spring Cloud Stream: "The output of sendToA() function goes to queueA".
+
+            spring.cloud.stream.rabbit.bindings.*
+                This is broker-specific configuration for RabbitMQ — used to:
+                -> Fine-tune Rabbit-specific behavior
+                -> Define routing keys, exchange types, dead-letter queues, etc.
+                routing-key-expression: '''queueA''' tells Spring: "When sending to Rabbit, use the routing key queueA for this binding."
+            
+            Why both are needed?
+                Spring Cloud Stream is designed to be broker-agnostic — Kafka, RabbitMQ, Pulsar, etc.
+                -> bindings.* configures how functions are wired
+                -> rabbit.bindings.* configures how messages behave in Rabbit
+            They're merged at runtime to produce the final message routing behavior
+
+    MessageProducer.java:
+        @RestController
+        @RequiredArgsConstructor
+        public class MessageProducer {
+
+            private final Function<String, String> sendToA;
+            private final Function<String, String> sendToB;
+
+            @PostMapping("/sendToA")
+            public ResponseEntity<String> sendToQueueA(@RequestBody String message) {
+                sendToA.apply(message);
+                return ResponseEntity.ok("Message sent to Queue A");
+            }
+
+            @PostMapping("/sendToB")
+            public ResponseEntity<String> sendToQueueB(@RequestBody String message) {
+                sendToB.apply(message);
+                return ResponseEntity.ok("Message sent to Queue B");
+            }
+        }
+
+    Functions.java:
+        @Configuration
+        public class Functions {
+
+            @Bean
+            public Function<String, String> sendToA() {
+                return message -> {
+                    System.out.println("Sending to Queue A: " + message);
+                    return message;
+                };
+            }
+
+            @Bean
+            public Function<String, String> sendToB() {
+                return message -> {
+                    System.out.println("Sending to Queue B: " + message);
+                    return message;
+                };
+            }
+        }
+
+    Project 2: notification-service
+        application.yml:
+        spring:
+            application:
+                name: notification-service
+
+            cloud:
+                stream:
+                function:
+                    definition: readQueueA;readQueueB
+                bindings:
+                    readQueueA-in-0:
+                    destination: queueA
+                    group: notificationGroupA
+                    readQueueB-in-0:
+                    destination: queueB
+                    group: notificationGroupB
+
+            Group keyword:
+                If you omit the group, Spring treats the consumer as anonymous and ephemeral:
+                    A new, non-durable queue(auto-delete) is created each time.
+                    Messages are broadcast to all anonymous consumers
+                    The consumer receives messages only while it’s running
+                    No message replay or durability
+                    Good for:
+                        Stateless event listeners
+                        Fire-and-forget event-driven flows
+                If you use the this then:
+                    The consumer is durable (will survive restarts)
+                    RabbitMQ creates a durable queue named after the group
+                    Messages are load-balanced across consumers in that group
+                
+                        With group | Without group
+                Durable consumer   |   Ephemeral consumer
+                Shared queue       | Individual temp queues
+                Load-balanced msgs | Broadcast to all
+                Good for scale-out | Good for dev/testing'
+
+                Why do we assign group in input bindings?
+                    Because only consumers (input bindings) care about "grouping".
+                    OUTPUT (Producers) don't care about group
+                    -> When you send a message, you’re just dropping it into an exchange or topic — you don't care who receives it, or how many.
+                    So for output, no group is needed.
+
+                    INPUT (Consumers) need group to:
+                        1. Ensure message delivery is shared across instances
+                            If you scale notification-service horizontally (e.g., 3 pods), and you want to avoid duplicate processing, the group makes all instances part of a single group, so each message is only consumed once, by one of the instances.
+                            readQueueA-in-0:
+                                destination: queueA
+                                group: notificationGroupA
+
+                            This means:
+                                “All instances of notification-service that share this group will consume from the same RabbitMQ queue: queueA.notificationGroupA.”
+                                Without the group, each instance would get all messages, resulting in duplicates"
+
+                        2. Enable durability
+                            With group, Spring Cloud Stream:
+                                -> Creates a durable queue
+                                -> Binds it to the configured destination
+                                -> Ensures that even if the consumer goes down, messages are persisted in the queue
+                                -> No group = non-durable, auto-deleted queue → messages may be lost if the consumer is down
+
+    NotificationServiceApplication.java
+        @SpringBootApplication
+        public class NotificationServiceApplication {
+            public static void main(String[] args) {
+                SpringApplication.run(NotificationServiceApplication.class, args);
+            }
+        }
+
+    MessageConsumer.java:
+        @Configuration
+        public class MessageConsumer {
+
+            @Bean
+            public Consumer<String> readQueueA() {
+                return message -> {
+                    System.out.println("Received from Queue A: " + message);
+                };
+            }
+
+            @Bean
+            public Consumer<String> readQueueB() {
+                return message -> {
+                    System.out.println("Received from Queue B: " + message);
+                };
+            }
+        }
+    flow diagram:
+               ┌──────────────────────────────┐
+               │        order-service         │
+               │     (Spring Cloud Stream)    │
+               └──────────────────────────────┘
+                        ▲            ▲
+                        │            │
+         Function: sendToA()     Function: sendToB()
+                        │            │
+                        ▼            ▼
+         ┌────────────────────┐ ┌────────────────────┐
+         │ Binding: sendToA-  │ │ Binding: sendToB-  │
+         │ out-0              │ │ out-0              │
+         └────────┬───────────┘ └────────┬───────────┘
+                  │ Rabbit Binding        │
+   routing-key: 'queueA'       routing-key: 'queueB'
+                  │                         │
+                  ▼                         ▼
+           ┌────────────┐           ┌────────────┐
+           │ RabbitMQ   │           │ RabbitMQ   │
+           │ Exchange   │           │ Exchange   │
+           └────┬───────┘           └────┬───────┘
+                │                        │
+           routingKey=queueA       routingKey=queueB
+                ▼                        ▼
+   ┌─────────────────────────┐ ┌─────────────────────────┐
+   │ Queue: queueA.notificationGroupA │ │ Queue: queueB.notificationGroupB │
+   └────────────┬────────────┘ └────────────┬────────────┘
+                │                           │
+     Function: readQueueA()       Function: readQueueB()
+                │                           │
+                ▼                           ▼
+  ┌──────────────────────────────┐ ┌──────────────────────────────┐
+  │     notification-service     │ │     notification-service     │
+  │     (Spring Cloud Stream)    │ │     (Spring Cloud Stream)    │
+  │     Group: notificationGroupA│ │     Group: notificationGroupB│
+  └──────────────────────────────┘ └──────────────────────────────┘
+
+
+# Spring cloud function
+    Without Spring Cloud Function — The Traditional Way
+        Let’s say you want to:
+        -> Expose logic via HTTP
+        -> Expose the same logic as a Kafka consumer
+        -> Deploy it to AWS Lambda
+
+        Problem: You need to duplicate the logic!, Example: Capitalizing a string input you'd typically write:
+            A. For HTTP (Spring Web):
+                @RestController
+                public class UppercaseController {
+                    @PostMapping("/uppercase")
+                    public String toUppercase(@RequestBody String input) {
+                        return input.toUpperCase();
+                    }
+                }
+            B. For Kafka (Spring Cloud Stream):
+                @EnableBinding(MyProcessor.class)
+                public class KafkaListener {
+                    @StreamListener("input")
+                    public void process(String input) {
+                        String output = input.toUpperCase();
+                        // send to output channel
+                    }
+                }
+            C. For AWS Lambda:
+                public class UppercaseLambda implements RequestHandler<String, String> {
+                    @Override
+                    public String handleRequest(String input, Context context) {
+                        return input.toUpperCase();
+                    }
+                }
+        Issue: Ypu duplicated your logic input.toUpperCase() across 3 different technologies. That’s not DRY or flexible.
+
+    With Spring Cloud Function — The Elegant Way
+        You write the logic once — as a function. Spring handles the rest.
+            @Bean
+            public Function<String, String> uppercase() {
+                return value -> value.toUpperCase();
+            }
+
+            A. Use It via HTTP:
+            Add spring-cloud-starter-function-web
+                curl http://localhost:8080/uppercase -H "Content-Type:text/plain" -d "hello"
+            B. Kafka
+                Add spring-cloud-starter-stream-kafka
+                    Configuration:
+                        spring:
+                            cloud:
+                                function:
+                                definition: uppercase
+                                stream:
+                                bindings:
+                                    uppercase-in-0:
+                                    destination: input-topic
+                                    uppercase-out-0:
+                                    destination: output-topic
+                It listens to input-topic, applies the function, and publishes to output-topic.
+            C. AWS Lambda
+                Add spring-cloud-function-adapter-aws
+                It automatically wires the function as a handler.
+                You can deploy the same Function as an AWS Lambda using the provided adapter class.
+
+    With Spring Cloud Function, you write logic once, and deploy it everywhere — HTTP, Kafka, RabbitMQ, AWS Lambda — without any tech-specific code.
+
+# Apache kafka
+    https://medium.com/@sutanu3011/kafka-a-peek-into-internals-b47b9dc6fd0f
+    This has a part-2 read that too.
+
+    Partitions in kafka:
+    You're diving into the heart of Kafka parallelism — awesome! Let's break down partitioning in detail, how consumers interact with it, and how Kafka manages load distribution and ordering.
+
+    What Is a Partition (Quick Recap)?
+        A partition is a sub-log of a Kafka topic:
+            Each partition is a sequential, append-only log
+            It is the unit of parallelism and ordering
+            Kafka topics can have one or more partitions
+
+    How Partitioning Works (Producer Side)
+        When a producer sends a message to a topic, Kafka decides which partition it should go to.
+
+    Partition Assignment Strategies:
+        Key-based	Kafka hashes the message key, then assigns it to a specific partition: partition = hash(key) % numPartitions
+        Round-robin	If no key is provided, Kafka round-robins the message across partitions
+        Custom partitioner	Developers can write custom logic to determine partitioning
+        Same key → same partition → ordered delivery per key
+
+    Partition Storage
+        Each partition is:
+            Physically stored on a single Kafka broker
+            Replicated to other brokers (for fault tolerance)
+            Contains log segments + index files
+
+    How Consumers Read from a Partition
+        A consumer reads messages sequentially from a partition
+        Tracks its own offset — the position of the last read message
+        Uses poll() to fetch data from the broker
+
+        records = consumer.poll(Duration.ofMillis(100));
+        Kafka sends:
+            A batch of messages (from the offset the consumer left off)
+            Messages in the exact order they were written in the partition
+
+    Consumer Groups and Partition Assignment
+        Key Concepts:
+            Kafka uses consumer groups to coordinate load sharing
+            Each partition is consumed by at most one consumer in a group at a time
+            This guarantees no duplicate processing within a group
+
+        Example:
+            Topic: orders with 3 partitions
+            Scenario -> Partition Assignment
+                1 consumer in group	Gets all 3 partitions
+                2 consumers in group	One gets 2, the other gets 1
+                3 consumers in group	Each gets 1 partition
+                4+ consumers in group	Extra consumers stay idle (only 3 partitions)
+                🔁 When consumers join/leave, Kafka rebalances partition assignments.
+
+    Ordering Guarantee
+        Kafka guarantees message order:
+            Within a partition
+            Not across partitions 
+        If order matters (e.g., all events of a single user), use a consistent key so those messages go to the same partition.
+
+# Kubernetes
+    Kubernetes (often abbreviated as K8s) is an open-source platform for automating the deployment, scaling, and management of containerized applications.
+    Think of it like this:
+        If Docker is like putting your application in a shipping container, Kubernetes is the shipping company that:
+        Figures out where containers should go
+        Makes sure they're running properly
+        Restarts them if they crash
+        Scales them up or down depending on demand
+        Handles network communication between them
+
+        The Problem Before Kubernetes:
+            Let’s say you're using Docker to run your app in a container. That’s awesome... for one container.
+            But real-world apps are more complex. You’ll quickly run into problems like:
+                1. Manual deployment & scaling
+                How do you deploy 10 copies of your app across multiple servers?
+                How do you scale from 3 to 30 containers during peak hours?
+
+                2. Fault tolerance
+                What if one container crashes? Who restarts it?
+                What if the whole server dies.
+
+                3. Networking
+                How do services find each other when containers have dynamic IPs?
+                How do you expose your app to the outside world?
+
+                4. Rolling updates
+                How do you deploy a new version of your app without downtime?
+                And if something breaks, how do you rollback?
+
+                5. Configuration management
+                How do you manage different environments (dev, test, prod)?
+                How do you handle secrets and app configs cleanly?
+
+            NOTE -> Kubernetes doesn't replace Docker — it builds on top of Docker (or any container runtime) to fix the problems you run into when managing containers at scale.
+
+        How Kubernetes Fixes This
+            Here’s how Kubernetes makes Docker production-ready:
+                1. Deployments & ReplicaSets
+                    You tell Kubernetes how many copies (replicas) you want. It ensures that number is running — always. If one crashes, it auto-restarts.
+                2. Services & Ingress
+                    Services give your app a fixed name and IP, even if the pod changes. Ingress lets you expose services with rules, TLS, etc.
+                3. Autoscaling
+                    K8s can automatically scale your app based on CPU or memory usage (with Horizontal Pod Autoscaler).
+                4. Health Checks
+                    You define readiness and liveness probes. If your app stops responding, K8s restarts it automatically.
+                5. Secrets & ConfigMaps
+                    Securely store and manage config data or secrets (like API keys or passwords) — separated from your code.
+                6. Rolling Updates
+                    Update your app with zero downtime. If something breaks, roll back in seconds.
+
+        
+# Client side vs server side load balancing
+
+# ClusterIP vs LoadBalancer 
+
+
