@@ -2519,7 +2519,30 @@
 
         
 # Client side vs server side load balancing
+    Easy just surf the net.
 
 # ClusterIP vs LoadBalancer 
 
+# @CleanUp
+Purpose:
+    @Cleanup automatically calls .close() on a resource when it goes out of scope — similar to what try-with-resources does, but with less code.
+Example
+    import lombok.Cleanup;
+    import java.io.*;
+
+    public class CleanupExample {
+        public static void main(String[] args) throws IOException {
+            @Cleanup FileInputStream fis = new FileInputStream("test.txt");
+            byte[] data = fis.readAllBytes();
+            System.out.println(new String(data));
+        }
+    }
+What Lombok Generates:
+    FileInputStream fis = new FileInputStream("test.txt");
+    try {
+        byte[] data = fis.readAllBytes();
+        System.out.println(new String(data));
+    } finally {
+        if (fis != null) fis.close();
+    }
 

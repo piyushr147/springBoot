@@ -37,6 +37,50 @@
     Security is also compromised if pointers are used because the users can directly access memory with the help of pointers.
     The usage of pointers can make the procedure of garbage collection quite slow and erroneous
 
+# Enum class
+    Because it implicitly extends java.lang.Enum class, and multiple extension is not supported by java.
+    It can implement interfaces
+    It can have cariables, constructors, methods
+    No other class can extend it, it's constructor are private.
+    It can have abstract method and all the constants should implement that method.
+
+    All the constats declared will have there own set of variables and methods inside enum, white and black will have each set of printDescription and variable for them.
+    If you want a method to be common for all enums declare it as static.
+    You can overrride the default printDescription to constant specific.
+    Abstract method implementation should be provided by each constant.
+        public enum EnumSample{
+            WHITE(0,"i am white") {
+                @Override
+                public void printType() {
+                    
+                }
+            },
+            BLACK(1,"i am black"){
+                @Override
+                public void printDescription(){
+                    System.out.println("white type: " + type);
+                }
+
+                @Override
+                public void printType() {
+                    System.out.println("black type: " + type);
+                }
+            };
+
+            final int type;
+            final String description;
+
+            EnumSample(int type, String description){
+                this.type = type;
+                this.description = description;
+            }
+
+            public void printDescription(){
+                System.out.println(description);
+            }
+            
+            public abstract void printType();
+        }
 # why constructor do not have a return type
     1. They are not regular methods
         Constructors are special functions whose purpose is to initialize a new object. They're called automatically when you use the new keyword.
@@ -285,9 +329,7 @@
     Static variable and class gets memory where the class is loaded. And these can directly be called with the help of class names.
 
 # static nested class
-    A class in the java program cannot be static except if it is the inner class. If it is an inner static class, then it exactly works like other static members of the class, that's why we call it static nested class.
-    Static nested classes do not depend on an instance of the outer class.
-    You can use them without creating an outer class object.
+    A class in the java program cannot be static except if it is the inner class. Static nested classes do not depend on an instance of the outer class, you can use them without creating an outer class object.
     Therefore, they are shared just like static methods or variables — they belong to the class, not the instances.
 
     Static variables and static methods:
@@ -299,8 +341,7 @@
         Calling Example.count or Example.showCount() accesses the same static member regardless of how many objects you create.
 
     But what about static classes?
-        In Java, only nested classes can be static. A top-level class cannot be static. So:
-        static nested class means:
+        In Java, only nested classes can be static. A top-level class cannot be static. So static nested class means:
             It does not have a reference to the enclosing instance.
             It does not behave like a static variable or method — it’s not shared.
             It’s just defined in a static context, meaning you don't need an outer object to instantiate it.
@@ -322,7 +363,7 @@
             }
     ➡️ So:
         A static nested class is not "shared" like a static variable/method.
-    It's just associated with the outer class, not its instance.
+    Note -> unlike normal classes static nested class can be Public, Protected and Private.
 
 # strings immutable in Java
     The String Pool (also called the intern pool) is a special memory region in the Java heap where Java stores string literals.
@@ -533,8 +574,106 @@
         6. Heap Space Allocation
             Young Generation is typically smaller compared to the Old Generation because it is optimized for new object allocations and frequent GCs.
             Old Generation is larger because objects that survive for a long time (after several GCs) are moved here. It is tuned for longevity, not for frequent allocation and deallocation.
-# Singelton pattern in java, is it thread safe?
 
+# Singelton pattern in java, is it thread safe?
+    1. Eager Initialization (Thread-Safe)
+        public class Singleton {
+            private static final Singleton instance = new Singleton();
+
+            private Singleton() {} // private constructor
+
+            public static Singleton getInstance() {
+                return instance;
+            }
+        }
+    Simple and thread-safe, but instance is created even if not used.
+
+    2. Lazy Initialization (Not Thread-Safe)
+        public class Singleton {
+            private static Singleton instance;
+
+            private Singleton() {}
+
+            public static Singleton getInstance() {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+                return instance;
+            }
+        }
+    Not thread-safe — multiple threads could create multiple instances.
+
+    3. Thread-Safe Lazy Initialization with Synchronization
+        public class Singleton {
+            private static Singleton instance;
+
+            private Singleton() {}
+
+            public static synchronized Singleton getInstance() {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+                return instance;
+            }
+        }
+        Thread safe, but accquires a lock everytime getInstance is called which causes performance issue as getInstance might be getting called massively.
+    
+    4. Double-Checked Locking (Best Practice)
+        public class Singleton {
+            private static volatile Singleton instance;
+
+            private Singleton() {}
+
+            public static Singleton getInstance() {
+                if (instance == null) {
+                    synchronized (Singleton.class) {
+                        if (instance == null) {
+                            instance = new Singleton();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+        Efficient and thread-safe.
+        What is the use of volatile keyword here:
+            What happens is in a multi-core cpu where each core works on memory, l1 level cache is on every core
+            Core1 enters the getInstance and creates a object stores it in cache for faster access but it hasn't stored it in memory yet
+            Meanwhile Core2 enters and checks the existence of object in it's own cache(obviously no object found) and memory where core1 hasn't stored the object.
+            This creates ambiguity, to avoid this volatile keyword is , it tells Core1 to create the object inside memory first.
+           
+    5. Bill Pugh Singleton (Recommended)
+        public class Singleton {
+            private Singleton() {}
+
+            private static class Holder {
+                private static final Singleton INSTANCE = new Singleton();
+            }
+
+            public static Singleton getInstance() {
+                return Holder.INSTANCE;
+            }
+        }
+        Thread-safe, lazy-loaded, no synchronization overhead.
+        When Singleton is loaded, the Holder class is not loaded.
+        Only when getInstance() is called, the JVM loads Holder and initializes INSTANCE.
+        The JVM guarantees class initialization is thread-safe, so no explicit synchronization is needed.
+
+# Imuutable list
+    private final List<String> list;
+    public List<String> getList() {
+        //this return the list with same referrence, this allows manipulation of the list even if you mark it as final.
+        return list;
+        //this will return a newly created list with diff referrence, manipulaiton to it will not effect our final list.
+        return new ArrayList<>(list);
+    }
+
+# Interface points
+    variables in interface are by default public static final, and they connot be made non-static or protected or private.
+    functions are also public abstract by default, we can't mark them private or protected.
+    Overriding method cannot have more restricitve access specifiers:
+        public method walk of Animal cannot be overriden as private or protected.
+    
 # can methods be defined inside an interface in java?
     In Java, methods defined in an interface cannot have a body (implementation) unless they are explicitly declared with:
         default
@@ -565,10 +704,34 @@
     ✅ static Methods (Since Java 8)
         Belong to the interface itself, not instances.
         Not inherited by implementing classes.
+        It cannot be overriden by the class extending or implementing classes.
 
     ✅ private Methods (Since Java 9)
         Help avoid duplication inside default or static methods.
         Cannot be called from outside the interface.
+
+    ✅ private static Methods (Since Java 9)
+        an be used to share code between static methods inside the interface.
+
+# How InterfaceB.super.print() works at compile-time and runtime, without an object of InterfaceB.
+    public interface InterfaceB {
+
+        default void print(){
+            System.out.println("hello from interfaceB");
+        }
+
+        public int size();
+    }
+    public interface InterfaceE extends InterfaceB{
+
+        default void print(){
+            InterfaceB.super.print();
+            System.out.println("hello from interfaceE");
+        }
+
+    }
+    
+
 
 # abstract class vs interface comparison chart
     Feature Comparison
@@ -609,280 +772,93 @@
             List<String> modifiableList = new ArrayList<>(Arrays.asList("a", "b", "c"));
             modifiableList.add("d"); // works fine
 
-# Why Were Generics needed?
-    -> Type Safety
-        Before generics, collections could store any Object, and you had to cast manually.
-            List list = new ArrayList();  // Pre-generics
-            list.add("Hello");
-            String s = (String) list.get(0);  // Must cast manually ✅
-        If the wrong type was added, you'd get a runtime ClassCastException.
+# What is Heap Pollution in Java?
+    Heap pollution occurs when a variable of a parameterized type (like List<String>) refers to an object that does not obey the generic type constraints — due to type safety being bypassed, usually with raw types or unchecked operations.
 
-    -> Generics remove the need for explicit casting, reducing boilerplate and errors.
+    In simple terms: The Java compiler thinks it's storing one type (e.g., String), but at runtime it's actually storing something else (e.g., Integer). This can cause ClassCastException later on.
 
-    -> You can write generic algorithms or data structures that work for any type.
-        public class Pair<K, V> {
-            private K key;
-            private V value;
-            // constructors, getters, setters
-        }
+    Example of Heap Pollution:
+        List<String> stringList = new ArrayList<>();
+        List rawList = stringList;  // raw type causes heap pollution
+        rawList.add(42);            // adds an Integer into List<String>
+        String s = stringList.get(0);  // ClassCastException at runtime
+    Why it's dangerous: The compiler allows it due to type erasure and raw types, but type safety is broken, and the program can crash.
 
-        Pair<String, Integer> user = new Pair<>("Alice", 101);
-
-    -> Errors are caught during compilation, not at runtime.
-
-    -> Generics avoids the duplication of code 
-        Suppose we have a box class that stores a single value(integer, float, boolean, string) now for creating a box object that conatins all these types but only one at a time i need to create 4 box classes.
-        To avoid this generic helps us.
-            public class Box<T> {
-
-                private T value;
-
-                public T getValue() {
-                    return value;
-                }
-
-                public void setValue(T value) {
-                    this.value = value;
-                }
-            }
-
-# Bounded type parameters in generics
-    we can also set our generic type to be bounded to a particaular type, suppose we want our class to be genric for numbers(int,float,long,double) but not for strings, we can simply make our class to be generic to Number class.
-    code:
-        public class NumberContainer<T extends Number> implements Container<T> {
+    When Does Heap Pollution Happen?
+        Using raw types with generics
+        Using varargs of generic types
+        Using unsafe casting
+        Mixing legacy (pre-Java 5) code with generics
     
-            private T value;
-            
-            @Override
-            public T getValue() {
-                return value;
-            }
-
-            @Override
-            public void setValue(T value) {
-                this.value = value;
-            }
-        }
-    Here NumberContainer implements an interface for container, now if we try to create a NumberContainer<String> this will throw a compile time exception.
-    Same boundation can be done on class level
-        interface Printable{}
-        class MyNumber extends Number implements Printable{}
-        class Boxx<T extends Number & Printable>{}
-
-        Boxx can have only those class object as T, which extends Number and implements Printable, which is MyNumber in this case.
-            MyNumber myNumber = new MyNumber(10);
-            Boxx<MyNumber> boxx = new Boxx<MyNumber>();
-
-# Generic constructors
-    Here the class is not generic but the constructor is, we can pass value of any type, the syntax is to use the type <T> syntax before the constructor name to tell that the type of parameter will be generic, and then use it inside parameters, 
-        public class Box2 {
+    Preventing Heap Pollution
+        Avoid raw types:
+            List<String> list = new ArrayList<>();
         
-            public <T> Box2(T value){
-                System.out.println(value);
+        Use @SafeVarargs for methods that take varargs of generic types:
+            @SafeVarargs
+            public static <T> void addToList(List<T>... lists) {
+                // safe use of varargs
             }
-            
-            public static void main(String[] args) {
-                Box2 box = new Box2(1);
-                Box2 box2 = new Box2("string");
-            } 
+        
+        Use bounded wildcards:
+            void process(List<? extends Number> numbers) { }
+        
+        Avoid casting between different generic types:
+            List<String> list = (List<String>) (List<?>) someObject;
+
+# Error vs Exception
+    Error – What It Is
+        Represents serious system-level failures.
+        Thrown by the JVM.
+        Your code should not catch or handle these.
+        Usually means something is critically wrong (like memory or stack issues).
+        Examples:
+        throw new OutOfMemoryError();
+        throw new StackOverflowError();
+
+    Exception – What It Is
+        Represents runtime problems or anticipated failures in your application logic.
+        You can catch and handle them using try-catch.
+        Types of Exceptions:
+            Checked Exception – Must be handled or declared.
+                IOException, SQLException, ParseException, ClassNotFoundException
+            Unchecked Exception – Runtime exceptions, don’t require handling.
+                ClassCastException, NullPointerException, ArrayIndexOutOfBoundsException, StringIndexOutOfBoundsException, IllegalArgumentException
+
+        Example:
+        try {
+            int a = 5 / 0;
+        } catch (ArithmeticException e) {
+            System.out.println("Divide by zero error");
         }
+        Inheritance Hierarchy:
+            Throwable
+            ├── Error               → (serious system errors)
+            └── Exception
+                ├── RuntimeException → (unchecked)
+                └── IOException      → (checked)
+# Key Uses of finally
+    Purpose	Example
+        Releasing resources	Closing files, sockets, DB connections
+        Cleaning up	Deleting temp files, resetting states
+        Ensuring code always runs	Logging, final calculations
 
-# Generic methods 
-    Methods can also be made generic like this:
-        use type <T> before the return type of the method.
-        public class Test {
-
-            public static void main(String[] args) {
-                int[] array = {1,2,3,4,5,6,7,8,9};
-                String[] strings = {"hello","world"};
-                printArray(strings);
-            }
-
-            public static <T> void printArray(T[] array){
-                for(T element: array){
-                    System.out.println(element);
-                }
-            }
-        }
-
-# Wild cards in generics
-    In generics, a wildcard is represented by the question mark ?. It is used to specify unknown types when defining or using generic classes, interfaces, or methods.
-    Suppose we write a generic method to print array, with return type as void
-        public <T> void printArray(ArrayList<T> list){
-            for(T t: list){
-                System.out.println(t);
-            }
-        }
-    So here we need not to use type T, we can use ? wild card as a method parameter, this will work the same.
-        public void printArray(ArrayList<?> list){
-            for(Object t: list){
-                System.out.println(t);
-            }
-        }
-    But in case we need to return something then we have to use genric type only, returning Object class type will again cause run time error.
-
-    Types of Wildcards
-        Unbounded Wildcard: <?>
-            Accepts any type.
-            Typically used when the logic doesn't depend on the type parameter.
-                public void printList(List<?> list) {
-                    for (Object obj : list) {
-                        System.out.println(obj);
+    File closing:  
+        BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader("file.txt"));
+                String line = reader.readLine();
+                System.out.println(line);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-
-        Upper Bounded Wildcard: <? extends T>
-            Accepts T or any subclass of T.
-            You can safely return values only when you're using upper-bounded wildcards (<? extends T>), because the compiler knows everything is at least of type T, Number class in this case.
-                public double sum(List<? extends Number> numbers) {
-                    double total = 0;
-                    for (Number n : numbers) {
-                        total += n.doubleValue();
-                    }
-                    return total;
-                }
-        
-        Lower Bounded Wildcard: <? super T>
-            Accepts T or any superclass of T.
-            Used when you want to write to a generic structure.
-                public void addIntegers(List<? super Integer> list) {
-                    list.add(1);
-                    list.add(2);
-                }
-    Note: 
-        You cannot use ? as a return type, that’s not allowed by the compiler because ? is a wildcard, not a real type that you can work with. It’s only allowed in type arguments, not as a standalone return type.
-        What you can do is use a bounded wildcard inside a generic wrapper
-            public List<? extends Number> getNumbers() {
-                return List.of(1, 2, 3);
             }
+    Note -> if JVM related issue happens like out of memory, system shutdown or process is killed forcefully, only then finally block is not executed.
 
-    Why this gives a compile time error, when we saw that we can use a wild card in generic wrapper.
-        List<? extends Number> numbers = Arrays.asList(1,2,3);
-        Number n = numbers.get(0); // ✅ You can read safely
-        numbers.add(1);            // ❌ You can't add — type is unknown
-    Because you're using ? extends Number, which is an upper-bounded wildcard. That tells the compiler:
-    "This list holds some subtype of Number — could be Integer, Double, Long, etc. I don’t know which."
-    And since the compiler doesn’t know the exact type, it can’t allow you to add anything to the list — even if it seems safe like 1 (an Integer).
-
-    What’s the fix?
-    If you want to add values to a generic list, you need a lower-bounded wildcard:
-        List<? super Integer> numbers = new ArrayList<>();
-        numbers.add(1);  // ✅ Allowed — Integer or subclass
-        numbers.add("sde");
-
-    Why does "sde" fail?
-        You declared the list as List<? super Integer>, which means:
-        "This list can hold Integer or any superclass of Integer (like Number, Object)."
-        BUT...
-        The compiler still needs to ensure type safety, and it only allows you to add things that are guaranteed to be at least an Integer, not even float.
-        1 is an Integer ✅
-        1.0 is an Float ❌
-        "sde" is a String ❌ — not allowed because it could violate the list’s type guarantee
-
-# super vs extends in generics
-    Understanding super vs extends in Java generics is key to using collections safely and effectively. Here's a clear breakdown:
-        ? extends T — Upper Bounded Wildcard, this is “Producer” — You can read from it.
-            Declaration:
-                List<? extends Number> list;
-                Means:
-                "This list holds some unknown subtype of Number — could be Integer, Double, etc."
-
-                ✅ You can:
-                    Read items safely as Number
-                    Example:
-                        Number num = list.get(0); // Safe
-
-                ❌ You cannot:
-                    Add any type of object (not even Number)
-                    Example:
-                        list.add(123); // Compile error
-                    Why? Because the actual type might be List<Double> — adding an Integer would break type safety.
-
-        ? super T — Lower Bounded Wildcard, this is a “Consumer” — You can write to it.
-            Declaration:
-                List<? super Integer> list;
-                Means:
-                "This list holds some unknown supertype of Integer — could be Integer, Number, or Object."
-
-                ✅ You can:
-                    Add Integer or its subtypes
-                        Example:
-                            list.add(123); // Safe
-                    
-                ❌ You cannot:
-                    Safely read elements as an Integer
-                        Example:
-                            Integer i = list.get(0); // Compile error
-                            Object o = list.get(0);  // OK
-                    Why? Because the actual type might be Object, and Java won’t let you assume it's an Integer.
-
-# Type eraser
-    Type erasure in Java is the process by which generic type information is removed at compile time, making generics a compile-time only feature. At runtime, the JVM has no knowledge of generic type parameters.
-
-    🔍 Why Does Type Erasure Exist?
-    Java generics were added in Java 5, but to maintain backward compatibility with older Java code, the compiler erases generic types before compiling the bytecode. This means generic code can run on JVMs that predate generics.
-
-    ✅ What It Looks Like
-        List<String> list = new ArrayList<>();
-        list.add("Hello");
-        String s = list.get(0);
-
-    At runtime, this is equivalent to:
-        List list = new ArrayList();  // raw type
-        list.add("Hello");
-        String s = (String) list.get(0);  // type cast added by compiler
-
-    🧹 How Type Erasure Works:
-        Generic types are replaced with their bounds (or Object if no bounds).
-        Type casts are inserted to preserve type safety.
-        Bridge methods are generated when needed (for inheritance with generics).
-    Examples
-        1. Erased type
-            public class Box<T> {
-                public T value;
-            }
-        Becomes:
-            public class Box {
-                public Object value;
-            }
-
-        2. Bounded type
-            public class Box<T extends Number> {
-                T value;
-            }
-        Becomes:
-            public class Box {
-                Number value;
-            }
-
-# what is instanceof and why can't we use it in generics
-    instanceof is a Java operator used to check whether an object is an instance of a specific class or implements an interface, at runtime.
-
-    ✅ Basic Usage
-        if (obj instanceof String) {
-            System.out.println("It's a String!");
-        }
-    This returns true if obj is a String, otherwise false.
-
-    🧱 Why instanceof Doesn’t Work with Generics
-        Because of type erasure, the generic type information is removed at runtime. So something like this is not allowed:
-        if (obj instanceof List<String>) {  // ❌ Compile-time error
-            ...
-        }
-    This fails because at runtime, List<String> becomes just List. There's no way for the JVM to distinguish between List<String> and List<Integer>.
-
-    Workaround: Use Class Tokens
-        public <T> boolean isInstanceOf(Object obj, Class<T> clazz) {
-            return clazz.isInstance(obj);
-        }
-    You can call:   
-        isInstanceOf("hello", String.class);  // true
-    This allows generic-like type checking while keeping it runtime-safe.
-
-# why can't i create a generic array
-    You can’t directly create a generic array in Java because of type erasure — the compiler removes the generic type information at runtime, so the JVM doesn't actually know what type the array should hold. This leads to type safety issues.
-
-     Why It's Disallowed
-        Let's say you try this:
-            T[] arr = new T[10]; // ❌ Compile-time error
-        At runtime, due to type erasure, the JVM doesn’t know what T is — it just sees Object[]. But generic arrays are meant to enforce type safety, and this would break that contract.

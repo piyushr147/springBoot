@@ -6,6 +6,7 @@ public class InnerClass {
     static int staticLevel = 20;
 
     public class NonStaticClass{
+
         void print(){
             System.out.println("from NonStaticClass" + objectLevel);
             System.out.println("from NonStaticClass" + staticLevel);
@@ -13,8 +14,14 @@ public class InnerClass {
     }
 
     public static class StaticClass{
+
+        int value;
+        public StaticClass(int value){
+            staticLevel = value;
+            this.value = value+100;
+        }
         public void print(){
-            System.out.println("from StaticClass" + staticLevel);
+            System.out.println("from StaticClass level: " + staticLevel + " value: " + value);
         }
     }
 }
