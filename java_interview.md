@@ -5,9 +5,7 @@
 # Access Specifiers -
     Defines accessibility of a method i.e who can use the method
     There are 4 types of access specifiers in Java methods :
-    1 -> Public : can be accessed through any
-    class in
-    any package .
+    1 -> Public : can be accessed through any class in any package .
     2 -> Private : can be accessed by methods only in the same class
     3 -> Protected : can be accessed by other classes in same package or other sub classes in different package by extending.
     4 -> Default : It can only be accessed by classes in same package and not inside other sub classes in different package by even by extending.
@@ -16,7 +14,7 @@
 
 # Variable Arguments (Varargs) :
     Variable numberof inputs in the parameter.
-    Only one variable argument can be present in the memod.
+    Only one variable argument can be present in the method.
     It should be the last argument in the list.
     Used when we don't know the number of arguments
 
@@ -393,7 +391,7 @@
             Their immutability allows their hashcode to be cached at construction for performance.
         String Pooling (Interning)
             Java optimizes memory by reusing common literals in the String Pool.
-            If strings were mutable, changing one pooled string would affect all references to it 😱
+            If strings were mutable, changing one pooled string would affect all references to it 
             Immutability ensures that pool values remain constant.
 
 # What part of memory - Stack or Heap - is cleaned in garbage collection process?

@@ -1,12 +1,10 @@
 # java
 
 ## JVM
-    JVM makes the machine platform independent, with any machine having JVM installed on it can run the java application, but JVM 
-    itself is platform dependent which means it has to created according to different operating systems.
+    JVM makes the machine platform independent, with any machine having JVM installed on it can run the java application, but JVM itself is platform dependent which means it has to created according to different operating systems.
     JVM runs on the top of the operating system
     JVM underatands Byte-code and not java code, so your compile converts your java code to byte-code which is executed by JVM
-    JVM converts the bytecode to machinecode, this machine code is platfor independent, jvm uses JIT(just in time) compiler to do this conversion. 
-
+    JVM converts the bytecode to machinecode, this machine code is platform independent, jvm uses JIT(just in time) compiler to do this conversion. 
     On your IDE write a java code and compile it using javac className.java -> this will return a bytecode which can be used inside any machine with jvm installed in it and will return the output, that's how jvm makes java platform independent.
 
 # JRE
@@ -16,7 +14,6 @@
     int a = Maths.java
     Math library is already present for us to work with, how we get it automatically, this is because of JRE which comes with pre-installed class libraries.
     Now your jvm bytecode from a mobile device used such libraries but running the bytecode on another machine like laptop with only JVM installed will not be able to convert it into machine code because it does not know about Math class, using JRE on another device makes it compatible to run all kind of bytecodes.
-
     So JVM is necessary to compile bytecode to machine code and JRE is necessary for resoving class libraries.
 
 # JDK
@@ -25,16 +22,14 @@
 
 # STACK AND HEAP
     Objects are stored in the heap memory and their reference are stored in stack wherever it is called.
-    for e.g -> Animal Lion = new Animal() now the object created through new keyword is stored in Heap memory but the Lion 
-    (reference variable of object) is stored in the stack memory of the function executing this line like:-
+    for e.g -> Animal Lion = new Animal() now the object created through new keyword is stored in Heap memory but the Lion (reference variable of object) is stored in the stack memory of the function executing this line like:-
     key->value
     Lion->100, this 100 is the address of the object created in the Heap
     The instance variable of the object has their memory stored in heap but methods are stored in stack, they are just 
     defined in the Heap.
 
 # STRINGS
-    While creating the strings like String s = "piyush", the JVM looks for "piyush" in the (String constant pool) and if it finds
-    one already present then it return the reference to the string otherwise it'll create a new one in the Heap.
+    While creating the strings like String s = "piyush", the JVM looks for "piyush" in the (String constant pool) and if it finds one already present then it return the reference to the string otherwise it'll create a new one in the Heap.
     So once you create a string you can't change it you can only reference your string object to refer to any other string inside the Heap, so String Class creates immutable strings in java unlike int and double which are mutable.
     To create mutable string we can use other classes like StringBuffer
     StringBuffer s = new StringBuffer(), it creates a string with a buffer size of genereally 16 Bytes so that it can solve the problem of continuous space allocation
@@ -53,11 +48,10 @@
     we can't access instance variables inside a static method but we can use static variables inside static methods of that class.
 
 # STATIC BLOCK
-    What if you want to initialise the static variable created inside your Mobile Class, initalising it inside the constructor will initialise it everytime the 
-    constructor is being called for every object, so to avoid it we have a static block which is exectued only once no matter how many object of that class are created
+    What if you want to initialise the static variable created inside your Mobile Class, initalising it inside the constructor will initialise it everytime the constructor is being called for every object, so to avoid it we have a static block which is executed only once no matter how many object of that class are created
 
     static{
-    brand = "Apple";
+        brand = "Apple";
     }
     this code is executed before the constructor this is because the class is loaded is called before object creation, we can verify it by manually loading the class
     with Class.forName("your classname") and code inside static block will execute.
@@ -122,8 +116,7 @@
 
 # ABSTRACT
     Suppose we have a class called Car(), now all the cars extending this class like BMQ,Toyota would have a drive method which is specific to each and every type of car itself, 
-    so instead of writing something like this:- public void drive(){} in your Car class we can mark it as abstract method :- public abstract void drive;, now here we have just 
-    given the skeleton of the drive function and all the children classes will extend it.Remember marking the function abstract means you should also mark the parent class as 
+    so instead of writing something like this:- public void drive(){} in your Car class we can mark it as abstract method :- public abstract void drive;, now here we have just given the skeleton of the drive function and all the children classes will extend it.Remember marking the function abstract means you should also mark the parent class as 
     abstract like := abstract class Car{} and it becomes mandatory for all the child classes to define the method drive() in their class otherwise it will throw an error.
     You can't create an object of abstract class, you can have abstract method defined in abstract class it won't be an error.
 

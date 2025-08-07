@@ -266,8 +266,6 @@
         Calls notifyAll() to wake up any consumer(s).
         Exits synchronized block, releasing the lock again.
 
-# ReadWriteLock
-
 # Optimistic vs Pessimistic Locking
     These are two different approaches to handle concurrent access to shared data.
     1. Pessimistic Locking
@@ -315,7 +313,8 @@
                 do {
                     prev = counter.get();
                     next = prev + 1;
-                } while (!counter.compareAndSet(prev, next)); // CAS check
+                } 
+                while (!counter.compareAndSet(prev, next)); // CAS check
             Or in databases: using a version number or timestamp field for compare-and-update.
 
         Pros:
@@ -505,7 +504,7 @@
     How is Data Cached Locally?
         CPU Caches
             Modern CPUs have multiple layers of cache (L1, L2, L3).
-            When a thread running on a CPU core accesses a variable, the CPU loads it into its core-local cache to speed up access.
+            When a thread is running on a CPU core accesses a variable, the CPU loads it into its core-local cache to speed up access.
             Reads and writes happen mostly in this local cache, not directly in main memory.
         Java Memory Model (JMM) & Thread Caches
             Java threads can also have thread-local caches — the JMM allows JVM and CPU to cache variables per thread to optimize performance.
@@ -522,9 +521,9 @@
         Always read and write this variable directly from/to main memory, not from caches.
         Internally:
             When a thread writes to a volatile variable:
-            It flushes the updated value from its local cache to main memory.
+                It flushes the updated value from its local cache to main memory.
             When a thread reads a volatile variable:
-            It invalidates its local cached copy and reads fresh value from main memory.
+                It invalidates its local cached copy and reads fresh value from main memory.
         This ensures:
             No thread ever caches the volatile variable's value locally for long.
             Each read sees the most recent write by any thread.
