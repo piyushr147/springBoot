@@ -42,13 +42,13 @@ public class Course implements Serializable {
     @Setter(AccessLevel.NONE)
     @Valid
     @JsonManagedReference
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     @Setter(AccessLevel.NONE)
     @Valid
     @JsonManagedReference
-    @ManyToMany(mappedBy = "courses",cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "courses",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private List<Student> students = new ArrayList<>();
 
     @CreationTimestamp

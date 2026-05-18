@@ -1,5 +1,4 @@
 # what is java collections, why we needed it what problem did it solve and how?
-
     The Java Collections Framework (JCF) is a unified architecture for representing and manipulating groups of objects. It provides data structures (like lists, sets, maps, queues) and algorithms (like sorting and searching) — all within a consistent API.
 
     Why Was Java Collections Introduced?
@@ -19,18 +18,19 @@
         All collections implement common interfaces like List, Set, Map, Queue, etc.
             List<String> list = new ArrayList<>();
             Set<Integer> set = new HashSet<>();
-
-        Data Structures Included
-            List: Ordered collection — ArrayList, LinkedList
-            Set: No duplicates — HashSet, TreeSet
-            Map: Key-value pairs — HashMap, TreeMap
-            Queue: FIFO — LinkedList, PriorityQueue
-
         Algorithms & Utilities
             The Collections class provides reusable algorithms:
             Collections.sort(list)
             Collections.reverse(list)
             Collections.shuffle(list)
+
+    Core Interfaces in Java Collections:
+        Interface   Description	                            Example Implementations
+        Collection	Root interface for all collections	    List, Set, Queue
+        List	    Ordered collection (allows duplicates)	ArrayList, LinkedList, Vector
+        Set	        No duplicates allowed	                HashSet, LinkedHashSet, TreeSet
+        Queue	    FIFO (First-In-First-Out) structure	    PriorityQueue, ArrayDeque
+        Map	        Key-value pairs (keys are unique)	    HashMap, LinkedHashMap, TreeMap, Hashtable
 
     Type Safety via Generics
         Collections use generics (from Java 5+), which avoid the need for casting:
@@ -46,7 +46,8 @@
     2. Initialization
         When you create an ArrayList, it starts with a default capacity (usually 10 if not specified):
             ArrayList<String> list = new ArrayList<>();
-        Initially, the elementData array is created with a capacity (e.g., 10 slots).
+        It does not immediately allocate memory for the array.
+        The array is created lazily upon the first element addition (in Java 8+).
 
     3. Adding Elements
         When you call add(E e), the element is added to the internal array.
@@ -229,11 +230,20 @@
 
 # What is LinkedHashMap?
     LinkedHashMap<K, V> is a subclass of HashMap that maintains a predictable iteration order:
-        Either insertion order (default)
-        Or access order (when configured)
+        It’s basically a HashMap with a memory — it remembers the order in which entries were inserted (or accessed).
+        It maintains insertion order (by default) or access order (if configured).
         It achieves this by maintaining a doubly linked list of all entries.
-    
-    Internal Data Structures
+
+    Property	                Description
+    Order	                    Maintains insertion order (or access order if enabled)
+    Duplicates	                Keys not allowed, Values are allowed
+    Nulls	                    1 null key, many null values allowed
+    Thread Safety	            Not synchronized
+    Underlying Data Structure	Hash table + Doubly linked list
+    Performance	Slightly slower than HashMap due to link maintenance
+
+    Internal Data Structures:
+        Internally, LinkedHashMap extends HashMap and adds a doubly linked list that connects all entries in order.
         LinkedHashMap uses:
             A hash table like HashMap (Node[] table)
             A doubly linked list to maintain order
@@ -248,13 +258,7 @@
         1. put(K key, V value)
             Works like in HashMap: computes hash, finds bucket, handles collision
             Additionally:
-                Adds the new node to the end of the linked list
-                Maintains before and after links
-            
-                Hash Bucket Table      Doubly Linked List
-                ┌───────────────┐      ┌─────────┐  ┌─────────┐
-                │  table[index] │ -->  │ entry1  │→ │ entry2  │→ ...
-                └───────────────┘      └─────────┘  └─────────┘
+                Adds the new node to the end of the doubly linked list and maintains before and after links.
 
         2. get(K key)
             Behaves like HashMap
@@ -276,31 +280,64 @@
                     return size() > MAX_ENTRIES;
                 }
 
-        When to use LinkedHashMap: 
-            You need a map that remembers the order of keys inserted	Maintains insertion order via a linked list
-            You want a cache with LRU (Least Recently Used) behavior	Use access order + removeEldestEntry() override
-            You want fast lookup and ordered iteration	Lookup is O(1); iteration is in a predictable order
+    Access Order Option
+        If you construct it with accessOrder = true:
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>(16, 0.75f, true);
+        Now the iteration order changes based on access (get or put).
+        Example:
+            map.put("A", 1);
+            map.put("B", 2);
+            map.put("C", 3);
 
-# HashMap vs LinkedHashMap
-    Core Difference
-        Feature	                        HashMap	                                    LinkedHashMap
-        Order of elements	            No guarantee – iteration order is random	Predictable – maintains insertion or access order
-        Underlying structure	        Hash table	                                Hash table + doubly linked list
-        Performance (get/put)	        O(1) average	                            O(1) average (slightly more overhead due to linking)
-        Null keys/values	            ✅ One null key, multiple null values	   ✅ Same
-        Thread-safe?	                ❌ No   	                                   ❌ No
-        Memory usage	                Lower	                                    Higher (because of extra linked list pointers)
-        Used in LRU caching?	        ❌ No built-in support  	                  ✅ Yes, via accessOrder and removeEldestEntry()
-        When serialized	                Unordered	                                Order preserved
+            map.get("A"); // accessed A
+            System.out.println(map.keySet());
+        Output:
+        [B, C, A]
+        Because "A" was recently accessed, it moves to the end.
+        This is super useful for building LRU caches (Least Recently Used).
+
+        Removing Eldest Entries (LRU Mechanism)
+            You can override the method removeEldestEntry() to automatically remove old entries.
+            Example:
+                LinkedHashMap<Integer, String> cache = new LinkedHashMap<>(3, 0.75f, true) {
+                    protected boolean removeEldestEntry(Map.Entry<Integer, String> eldest) {
+                        return size() > 3; // keep max 3 entries
+                    }
+                };
+                cache.put(1, "A");
+                cache.put(2, "B");
+                cache.put(3, "C");
+                cache.get(1); // access 1
+                cache.put(4, "D"); // triggers removal
+
+                System.out.println(cache);
+            Output:
+            {3=C, 1=A, 4=D}
+            Oldest unused (2) was automatically removed!
+
+    When to use LinkedHashMap: 
+        You need a map that remembers the order of keys inserted	Maintains insertion order via a linked list
+        You want a cache with LRU (Least Recently Used) behavior	Use access order + removeEldestEntry() override
+        You want fast lookup and ordered iteration	Lookup is O(1); iteration is in a predictable order
 
 # What is TreeMap?
+    A TreeMap in Java is a Red-Black Tree–based implementation of the NavigableMap interface.
+    It stores key–value pairs in sorted (ascending) order of keys — unlike HashMap, which is unordered.
+
+    Property	                Description
+    Ordering	                Keys are always sorted (natural or custom order)
+    Underlying Data Structure	Red-Black Tree (self-balancing binary search tree)
+    Null Keys	                Not allowed (throws NullPointerException)
+    Null Values	                Allowed
+    Duplicates	                Keys unique, Values may repeat
+    Performance	                O(log n) for all operations
+    Thread Safety	            Not synchronized
+
     A Map implementation that keeps keys sorted according to:
-        Their natural ordering (Comparable)
-        Or a custom Comparator
-    Backed by a Red-Black Tree and not thread-safe
+        Their natural ordering (Comparable) Or a custom Comparator
     Does not allow null keys (throws NullPointerException) but allows multiple null values
 
-    Internal Data Structures
+    Internal Data Structures:
         TreeMap uses a nested static class called Entry<K, V>:
             static final class Entry<K,V> implements Map.Entry<K,V> {
                 K key;
@@ -313,18 +350,18 @@
 
     1. put(K key, V value)
         Steps:
-            Check if key is null → throw NullPointerException.
-            Start from the root node.
-            Traverse the tree using key comparison (compareTo() or comparator).
-            If key exists → update value.
-            If key doesn't exist → insert a new node.
-            Rebalance tree to maintain Red-Black Tree properties (rotations + recoloring).
-        Time complexity: O(log n)
+            If the tree is empty → key becomes the root.
+            Otherwise, compare with existing keys:
+                Smaller → go left
+                Larger → go right
+            Insert in correct position.
+            Balance the tree using Red-Black Tree rules to maintain O(log n) operations.
+        Maintains sorted order of keys automatically.
 
     2. get(Object key)
         Traverse the tree based on key comparison.
-        If key found, return value.
-        If not found, return null.
+            If key found, return value.
+            If not found, return null.
         Time complexity: O(log n)
 
     3. remove(Object key)
@@ -345,6 +382,9 @@
             Higher: > key
             Lower: < key
 
+    If you want custom order → pass a Comparator to constructor:
+        TreeMap<String, Integer> map = new TreeMap<>(Comparator.reverseOrder());
+
     Red-Black Tree Basics
         TreeMap uses a Red-Black Tree to keep operations efficient:
             Each node is either red or black.
@@ -361,12 +401,88 @@
         Navigable operations (like reverse order, partial views)	Implements NavigableMap
 
     Real-world Scenarios
-        ✅ Use TreeMap for:
         Leaderboard systems where you need rankings (scores in order).
         Calendar apps where events are stored and queried by date/time.
         Interval trees or range searches on sorted data.
         Autocomplete suggestions where prefixes matter (sorted keys help).
 
+# HashTable and it's working
+    A Hashtable in Java is a key–value data structure that stores elements using hashing.
+    It’s very similar to a HashMap, but with one major difference — it is synchronized (thread-safe).
+
+    Property	        Description
+    Duplicates	        Keys not allowed, Values are allowed
+    Nulls	            Neither null keys nor null values are allowed
+    Order	            Unordered
+    Thread Safety	    Synchronized (all methods are thread-safe)
+    Performance 	    Slower than HashMap due to synchronization
+
+    Synchronization Mechanism:
+        All major methods (get, put, remove, etc.) are synchronized, e.g.:
+            public synchronized V get(Object key) { ... }
+            public synchronized V put(K key, V value) { ... }
+        This means:
+            Only one thread can access the map at a time.
+            Prevents race conditions.
+            But introduces performance overhead in multithreaded scenarios.
+
+# ConcurrentHashMap (The modern alternative of HashTable),
+    A ConcurrentHashMap is a thread-safe, high-performance, hash-based implementation of the Map interface — designed for multi-threaded environments, it's more fast then HashTable because hashtable locks the whole table while doing a get or put operation but this only puts a lock on specific bucket which a thread is trying to access. This makes multiple threads to work on different buckets simultaneously.
+
+    Property	        Description
+    Thread Safety	    Yes — multiple threads can read/write concurrently
+    Null Keys/Values	Not allowed (throws NullPointerException)
+    Locking Mechanism	Fine-grained locking (segments or per-bin locks)
+    Iteration	        Weakly consistent (no ConcurrentModificationException)
+    Performance	        Much faster than Hashtable under high concurrency
+
+    Internal Working of ConcurrentHashMap
+        Data Structure:
+            In Java 8+, a ConcurrentHashMap is built using:
+                An array of buckets (like a HashMap)
+                Each bucket is a chain or tree of nodes
+                Locking happens per bucket, not the entire map
+            
+            static class Node<K,V> implements Map.Entry<K,V> {
+                final int hash;
+                final K key;
+                volatile V value;
+                volatile Node<K,V> next;
+            }
+            Notice volatile — ensures visibility across threads.
+
+        Concurrency Mechanism
+            Before Java 8:
+                The map was divided into segments (each with a lock).
+                Example: 16 segments → 16 threads could operate concurrently.
+            After Java 8:
+                No segments.
+                Uses fine-grained synchronization via:
+                    CAS (Compare-And-Swap) operations
+                    synchronized blocks on individual bins
+                    volatile fields for visibility
+            So, multiple threads can update different buckets at the same time safely.
+
+        put() Internal Flow:
+            When you call:
+                map.put("Alice", 25);
+            Here’s what happens internally:
+                Compute hash of the key.
+                Find target bucket index.
+                    If bucket is empty:
+                        Use CAS to insert new node atomically.
+                    If bucket is non-empty:
+                        Lock only that specific bin (not the entire map).
+                        Traverse the list/tree.
+                        Update or insert the node.
+                Release the lock.
+            Result: Multiple threads can safely modify different bins simultaneously.
+        
+        get() Operation
+            No locking:
+                Uses volatile reads to ensure visibility.
+                Traverses only the relevant bucket.
+            Extremely fast for read-heavy workloads.
 
 # why can't we add in between iteration of HashMap/HashSet
     The reason we can’t safely add to a HashMap during iteration (i.e., in between iteration steps) is due to how Java's fail-fast iterators work, and how they protect consistency of the data structure during traversal.
@@ -391,9 +507,9 @@
 
     2. Why Is It a Problem?
         When you add a new element to the map:
-        The internal hash table may resize
-        The bucket structure may change
-        Iteration order may be corrupted
+            The internal hash table may resize
+            The bucket structure may change
+            so, the Iteration order may get corrupted
         The new entry may be inserted into a bucket that the iterator has already passed, or one it hasn't reached yet
         This causes the iterator to behave unpredictably — so Java fails fast rather than continue with corrupted behavior.
 

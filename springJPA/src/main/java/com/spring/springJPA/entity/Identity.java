@@ -27,6 +27,7 @@ public class Identity {
     @Column(nullable = false)
     private IdentityType identityType;
 
+    //mappedBy on Identity tells that Student is the owner of entity of this relationship.
     @OneToOne(mappedBy = "identity")
     @JsonIgnoreProperties("identity")
     private Student student;

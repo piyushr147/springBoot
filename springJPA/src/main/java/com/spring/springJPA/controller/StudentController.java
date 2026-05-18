@@ -5,11 +5,14 @@ import com.spring.springJPA.entity.Student;
 import com.spring.springJPA.searchCriteria.student.StudentSearch;
 import com.spring.springJPA.service.StudentService;
 import jakarta.validation.Valid;
+import org.springframework.beans.PropertyValuesEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,17 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+    @InitBinder("student")
+    public void initBinder(WebDataBinder binder){
+        binder.registerCustomEditor(String.class, "name",new PropertyEditorSupport(){
+            @Override
+            public void setAsText(String text){
+                setValue(text.toLowerCase());
+            }
+        });
+    }
+
 
     @GetMapping("/getStudents")
     public ResponseEntity<List<Student>> getStudents(){

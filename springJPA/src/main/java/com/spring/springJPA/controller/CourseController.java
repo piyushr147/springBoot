@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.support.JdbcTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,12 +34,17 @@ public class CourseController {
 
     @GetMapping("/getCourses/searchBy")
     public ResponseEntity<List<Course>> searchBy(@RequestBody CourseSearch courseSearch){
+        PlatformTransactionManager platformTransactionManager = new JdbcTransactionManager();
         return new ResponseEntity<>(courseService.searchByFilters(courseSearch),HttpStatus.OK);
     }
 
     @GetMapping("/getCourse/{id}")
     @JsonIgnoreProperties(value = {"reviews","students"},allowGetters = true)
     public ResponseEntity<?> getById(@PathVariable("id") int courseId){
+        if(courseId<0){
+            throw new IllegalArgumentException("Invalid course id");
+        }
+
         Optional<Course> course =  courseService.getById(courseId);
         if(course.isEmpty()){
             String message = "No course with Id: " + courseId;

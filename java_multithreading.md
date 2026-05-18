@@ -82,7 +82,7 @@
     Whenever we start a program a process is created which has its own memory space, system resources, and at least one thread (the main thread).
     when a main function is called, main is the first thread that is created, in the program you can create multiple other threads.
     Heap, Code segment, Data segment are shared among all the threads.
-    Stack, Registers, Program counters are individual for each thread, they do not share data of tese memory areas.
+    Stack, Registers, Program counters are individual for each thread, they do not share data of these memory areas.
 
 # Ways of creating threads
     1. By Extending the Thread Class
@@ -119,14 +119,19 @@
             }
         }
 
-# What is a Monitor Lock?
+# What is a Monitor Lock (intrinsic lock)?
     Every Java object has an associated monitor, which can be thought of as a lock. When a thread wants to execute synchronized code, it must first acquire the object's monitor lock. While one thread holds the lock, all other threads trying to access the same monitor (i.e., synchronized block/method) are blocked until the lock is released.
 
     Conceptually:
         Only one thread can hold a monitor lock on a particular object at any time.
         It's used to ensure atomic access to critical sections of code.
         The lock is automatically released when the synchronized method or block completes (or throws an exception).  
-  
+    Working:
+        Every Java object has an associated monitor lock.
+        The JVM checks if the thread can acquire the object's monitor.
+        If no other thread holds it, the thread acquires it and continues
+        If another thread already holds the monitor, the current thread waits (blocks).
+        When the thread exits the synchronized code, the JVM releases the monitor.
     Where It's Used
         1. Synchronized Instance Method
             public synchronized void increment() {
@@ -145,26 +150,35 @@
                 // critical section
             }
             Here, the monitor lock is explicitly on someObject.
-    
+     
 # wait notify and notifyAll
+    In Java, the wait(), notify(), and notifyAll() methods are used for thread communication — they let threads cooperate rather than just compete for locks.
+    The Problem They Solve:
+        Sometimes threads need to coordinate their actions.
+        Example:
+            Thread A (producer) adds data to a shared queue.
+            Thread B (consumer) takes data from the same queue.
+        If the queue is empty, the consumer shouldn’t spin uselessly — it should wait until the producer adds something.
+        That’s where wait() and notify() come in.
     wait()
         Causes the current thread to wait until another thread calls notify() or notifyAll() on the same object.
         The thread releases the lock on the object and enters the WAITING state.
-
     notify()
-        Wakes one thread that is waiting on the object’s monitor.
+        Wakes one of the threads waiting on the object’s monitor(chosen by JVM).
         The awakened thread cannot proceed until it re-acquires the monitor lock.
-
     notifyAll()
-        Wakes all threads waiting on that monitor.
+        Wakes all threads waiting on that monitor. Only one will reacquire the lock first.
+    States Transition Diagram:
+        State	            Trigger
+        RUNNING → WAITING	wait()
+        WAITING → BLOCKED	notify() or notifyAll()
+        BLOCKED → RUNNING	Thread reacquires the monitor lock
 
 # notify vs notifyAll
     Pitfall with notify()
         If multiple threads are waiting for different conditions on the same object and you use notify(), you might accidentally wake a thread that can't proceed:
-
         Thread 1: wait until buffer is not empty  
         Thread 2: wait until buffer is not full
-
         Producer calls `notify()`  
         → might wake Thread 2 (waiting for space), but buffer is still full  
         → Thread 2 goes back to wait  
@@ -194,7 +208,6 @@
 
 # Daemon thread
     A daemon thread in Java is a background thread that runs to support other threads, typically non-essential for the application’s execution. When all user (non-daemon) threads finish, the JVM will terminate, even if daemon threads are still running.
-
     What Is a Daemon Thread?
         It’s a low-priority thread that provides services to user threads.
         JVM automatically exits once all user threads are done — daemon threads won’t keep the JVM alive.
@@ -205,11 +218,9 @@
         1. Garbage Collection (GC)
             JVM runs the GC as a low-priority background task to free up memory.
             It doesn’t interfere with main program logic and is automatically killed when the application ends.
-
         2. Background Logging
             Writing logs to a file or remote server in the background.
             Prevents logging overhead from affecting the main thread’s performance.
-
         3. Caching & Lazy Initialization
             Background caching of data or preloading objects.
             If the main thread finishes, the cache thread should exit gracefully.
@@ -267,41 +278,42 @@
         Exits synchronized block, releasing the lock again.
 
 # Optimistic vs Pessimistic Locking
-    These are two different approaches to handle concurrent access to shared data.
-    1. Pessimistic Locking
-        Assumes conflicts are likely.
-        Protects shared data by locking it before access.
-        Blocks other threads until the lock is released.
+    Both optimistic and pessimistic locking are strategies to handle concurrent access to shared data and prevent race conditions or inconsistent updates.
+    Strategy	            Core Idea
+    Pessimistic Locking	    “Assume conflict will happen.” → Lock the data before accessing it.
+    Optimistic Locking	    “Assume conflict is rare.” → Allow concurrent access and check for conflicts after access.
 
+    1. Pessimistic(Blocking) Locking (Syncronized, ReadWrite)
+        Assumes conflicts are likely so it protects shared data by locking it before access.
+        Blocks other threads until the lock is released, it follows a blocking mechanism.
         Use When:
-            High chance of data being modified by multiple threads.
+            High chance of data being modified by multiple threads
             Conflicts must be strictly avoided.
             In Java:
                 synchronized (object) {
                     // exclusive access
                 }
                 or
-                lock.lock();  // e.g. ReentrantLock, ReadWriteLock
+                lock.lock();  // e.g. ReentrantLock, ReadWriteLock (Explicit locks)
                 try {
                     // access shared data
                 } finally {
                     lock.unlock();
                 }
-
         Pros:
             Safe and consistent.
             Simple to reason about.
-
         Cons:
-            Reduces concurrency.
+            Reduces concurrency(threads spend time waiting).
             Can lead to deadlocks or thread starvation.
+        When to Use:
+            When conflicts are frequent.
+            When operations are long-running and must be consistent.
+            When you need strong consistency (e.g., banking transactions).
 
-    2. Optimistic Locking
-        Assumes conflicts are rare.
-        Reads data without locking.
-        Before writing, checks whether data was changed in the meantime.
+    2. Optimistic Locking (AtomicInteger, Stamped, CAS)
+        Assumes conflicts are rare so it reads data without locking but before writing it checks whether data was changed in the meantime, it follows a non-blocking mechanism.
         If changed → retry or fail.
-
         Use When:
             Many reads, very few writes.
             High concurrency is desired.
@@ -316,57 +328,112 @@
                 } 
                 while (!counter.compareAndSet(prev, next)); // CAS check
             Or in databases: using a version number or timestamp field for compare-and-update.
-
         Pros:
             High performance for read-heavy workloads.
             No blocking = more scalability.
-
         Cons:
             Risk of repeated failures (CAS retries).
             Requires additional logic (e.g., version tracking).
+        When to Use:
+            When conflicts are rare.
+            When operations are short-lived.
+            When high throughput and parallel reads are desired.
+
+    Comparison table:
+        | Concept            | Optimistic Locking            | Pessimistic Locking          |
+        | ------------------ | ----------------------------- | ---------------------------- |
+        | Lock Type          | Non-blocking                  | Blocking                     |
+        | Typical Use        | Atomic variables, StampedLock | synchronized, ReentrantLock  |
+        | Conflict Detection | After modification            | Before modification          |
+        | Performance        | High under low contention     | Stable under high contention |
+        | Failure Handling   | Retry mechanism               | Thread waits                 |
+        | Use Case           | Read-heavy systems            | Write-heavy systems          |
+
+# What Is a Deadlock?
+    A deadlock is a situation where two or more threads are permanently blocked, waiting for each other to release locks they need.
+    In simpler words:
+        A deadlock happens when Thread A holds Lock 1 and waits for Lock 2,
+        while Thread B holds Lock 2 and waits for Lock 1.
+    Neither thread can proceed → system freezes.
+
+    According to Coffman’s conditions, all 4 must hold true for a deadlock to occur:
+        Condition	        Meaning
+        Mutual Exclusion	A resource can be held by only one thread at a time.
+        Hold and Wait	    A thread holds one resource and waits for another.
+        No Preemption	    Resources can’t be forcibly taken away from a thread.
+        Circular Wait	    A circular chain of threads each waiting on resources held by the next thread.
+    If you can break any one of these conditions, you can avoid deadlock.
+
+    How to avoid a deadlock:
+        Consistent Lock Ordering
+            Always acquire locks in a fixed global order, if resource r1 and r2 are to be locked in a program they should be locked in the same order everywhere(r1->r2 or r2->r1).
+        Use Try-Lock (with Timeout)
+            Instead of blocking forever, attempt to acquire a lock for a limited time.
+        Use Higher-Level Concurrency Tools
+            java.util.concurrent classes (ConcurrentHashMap, BlockingQueue, etc.)
+            ExecutorService instead of manually controlling threads.
+
+    How Optimistic Locks Can Cause Deadlocks
+        Normally, optimistic locks (like CAS or StampedLock) are non-blocking and designed to avoid deadlocks.
+        But under some conditions, they can simulate deadlock-like behavior or cause live locks
+        Example:
+            Both threads read value=10
+            Thread A tries to write 11
+            Thread B tries to write 12
+            Both fail CAS -> retry -> both fail again
+            Infinite loop of retries -> livelock
+        StampedLock Deadlocks (Write + Read Conflicts)
+            StampedLock is not reentrant — meaning if a thread holding a write lock tries to reacquire it or a read lock, it will deadlock itself.
+            Example:
+                StampedLock lock = new StampedLock();
+                void doWork() {
+                    long stamp = lock.writeLock();
+                    try {
+                        // Deadlock if we try to get another write/read lock here
+                        long readStamp = lock.readLock();  // DEADLOCK!
+                    } finally {
+                        lock.unlockWrite(stamp);
+                    }
+                }
+                Thread holds the write lock and waits for itself — a self-deadlock
+
+    Difference: Deadlock vs Livelock
+        Concept	Description
+        Deadlock	Threads are blocked forever, waiting for each other.
+        Livelock	Threads keep retrying or yielding, but no real progress is made.
 
 # ReadWriteLock
-     What is a ReadWriteLock?
-        A ReadWriteLock is a special type of lock in Java (java.util.concurrent.locks.ReadWriteLock) that allows:
-        Multiple readers to access a resource simultaneously, if no thread is writing.
-        One writer to access the resource exclusively, i.e., no other readers or writers can access it.
-        Java provides ReentrantReadWriteLock as a concrete implementation.
-
+    In real-world concurrent systems, most threads just read shared data, and only a few modify it. Using a regular synchronized lock or ReentrantLock causes unnecessary contention because:
+        Traditional locks are exclusive - Only one thread can hold the lock — even if others just want to read.
+        This limits scalability and performance in read-heavy scenarios.
+    So Java provides the ReadWriteLock to increase concurrency:
+        Multiple readers can hold the read lock simultaneously if no thread is writing.
+        Only one writer can hold the write lock, and no readers can read while it writes.
+        ReentrantReadWriteLock is the implemtation of it.
     Why is it used?
         To improve concurrency when frequent reads and occasional writes are required.
-
-    Problem with synchronized or ReentrantLock:
-        Traditional locks are exclusive — whether reading or writing, only one thread at a time can hold the lock.
-        This limits scalability and performance in read-heavy scenarios.
-
     ReadWriteLock Solution:
         Multiple threads can read in parallel, improving throughput.
         Only blocks reads when a write is ongoing, or vice versa.
-
     How it works?
         ReentrantReadWriteLock provides:
             readLock() — Acquires a shared read lock.
             writeLock() — Acquires an exclusive write lock.
-    
     Real-World Use Cases
         1. Caching Systems
             Frequently read cached data.
             Occasionally update the cache (e.g., eviction or refresh).
             ReadWriteLock allows concurrent cache reads and exclusive updates.
-
         2. Configuration Management
             App reads config values frequently.
             Admin updates config occasionally (e.g., reloading settings).
             Readers don’t block each other, but wait if an update is happening.
-
         3. Routing Tables / Dictionary Structures
             Multiple threads read routes or look up words.
             Only one thread updates the structure at a time.
-
         4. Analytics / Reporting Dashboards
             Many users query data.
             Only backend thread writes updated statistics.
-
     Important Considerations
         Deadlocks: Mixing read and write locks carelessly can cause deadlocks.
         Starvation: Readers may starve writers if reads are continuous.
@@ -379,21 +446,24 @@
             Write Lock (exclusive)
             Read Lock (shared)
             Optimistic Read Lock (optimistic, no actual locking)
-
         Unlike traditional locks, StampedLock returns a stamp (a long token) representing the lock state, which must be used to release the lock or validate optimistic reads.
 
     What Problem Does StampedLock Solve?
         Traditional read-write locks like ReentrantReadWriteLock allow multiple readers or one writer, but:
             Read locks are pessimistic: readers block writers and vice versa.
-            Performance issues under high contention, especially when reads are frequent and writes are rare.
+            No optimistic reading — readers still need to acquire a real lock, which adds overhead.            
             Readers can block writers even if they only want to read and the write is waiting.
-
         StampedLock introduces optimistic reading, which allows threads to:
             Proceed without blocking or acquiring a heavy read lock.
-            Later validate if no write occurred during their read.
+            Later validate if no write occurred during their read using a stamp.
+        Hence the name “StampedLock”, because every operation returns a stamp (long value) that uniquely identifies the lock state. This is particularly efficient when writes are rare, enabling much better throughput and scalability for mostly-read scenarios.
 
-        This is particularly efficient when writes are rare, enabling much better throughput and scalability for mostly-read scenarios.
-    
+    Locking Modes in Detail
+        Mode	                Description	                            Blocking?   Exclusive?	Use Case
+        writeLock()	            Blocks all readers/writers	            Yes	        Yes	        When writing or updating data
+        readLock()	            Blocks writers, allows multiple readers	Yes	        No	        Safe, concurrent reads
+        tryOptimisticRead()	    Doesn’t block at all, returns a stamp	No	        No	        Fast read; verify with validate()
+            
     Optimistic Read
         Does not block writers.
         Returns a stamp that can be used to validate later.
@@ -427,19 +497,54 @@
 # Why are StampedLocks Non-Reentrant?
     What is reentrancy?
         Reentrancy means that a thread can acquire the same lock multiple times without blocking itself. For example, with ReentrantLock or synchronized, a thread can safely enter the same critical section again if it already holds the lock.
-
-    Why StampedLock is not reentrant:
-        -> StampedLock is designed for maximum performance and low memory footprint, especially for optimistic reads.
-        -> To achieve this, it avoids maintaining complex internal state about which thread holds the lock, unlike           ReentrantLock which keeps ownership and count.
-        -> There is no internal tracking of thread identity — the lock only returns a stamp (long) when acquired, and that stamp is required to release it.
-        -> Because it doesn’t track ownership:
-            If the same thread calls writeLock() twice, it blocks itself (deadlock).
-            If a thread tries to release a lock it didn’t acquire (wrong stamp), the result is undefined behavior.
-
+    Reentrancy Needs Ownership Tracking
+        For a lock to be reentrant, it must track:
+            Which thread currently owns the lock.
+            How many times that thread has entered the lock (hold count).
+            That means maintaining:
+                A Thread → Count mapping,
+                Atomic checks to identify if the calling thread is the owner.
+            All of that adds:
+                Extra memory cost,
+                Synchronization overhead on every lock() and unlock() call.
+    StampedLock Uses a Stamp Instead of Ownership
+        Instead of keeping track of “who” owns the lock, StampedLock uses a stamp (a long number) as a token.
+        Each call to:
+            long stamp = lock.readLock();
+            or
+            long stamp = lock.writeLock();
+        returns a unique number representing the lock state at that moment.
+        The lock doesn’t care which thread holds that stamp — it only knows that someone does.
+        This design:
+            Removes thread tracking,
+            Makes lock operations cheaper and faster,
+            But also means it can’t detect if the same thread is reacquiring the lock → hence non-reentrant. 
+    What Happens If You Try to Re-enter a StampedLock
+        Example:
+            StampedLock lock = new StampedLock();
+            long stamp1 = lock.writeLock();
+            long stamp2 = lock.writeLock(); // 🚫 blocks forever (deadlock)
+        The thread will wait for itself to release the first lock —but since it never releases it (it’s the same thread), it deadlocks.
+        There’s no “this thread already owns it” check — because StampedLock doesn’t track thread ownership.   
     So, to keep StampedLock fast and lightweight, thread-ownership tracking (needed for reentrancy) is skipped, making it non-reentrant by design.
 
 # What Is a Lock-Free Mechanism?
+    The Problem with Locks
+        When multiple threads access shared data, we usually use locks to prevent race conditions.
+            Example:
+            synchronized void increment() {
+                count++;
+            }
+        This ensures only one thread can modify count at a time which is Safe — but not always fast.
+        Problems with Locks:
+            Blocking: If one thread holds the lock, others must wait.
+            Deadlocks: Two threads may wait forever for each other’s locks.
+            Priority inversion: A low-priority thread can block a high-priority one.
+            Context switching: Waiting threads may cause OS scheduling overhead.
+        These problems grow worse in high-contention, multi-core, and real-time environments.
+
     A lock-free mechanism allows multiple threads to operate on shared data concurrently without using locks. Instead of blocking or waiting, threads use atomic operations like compareAndSet() (CAS) to try updates and retry if there's a conflict.
+    They don’t “own” resources — they just retry if a conflict happens.
     Key Properties of Lock-Free Algorithms
         Property	    Meaning
         Non-blocking	No thread ever gets suspended or waits for another to release a lock.
@@ -453,11 +558,10 @@
 
     A thread gets blocked indefinitely.
         Lock-free systems avoid deadlocks because:
-        No blocking or waiting: threads don’t hold exclusive locks.
-        No ownership tracking: resources aren’t held, so no circular waits.
-        Even if a thread is suspended, others can continue progressing.
-
-        ✅ Progress is guaranteed for at least one thread (lock-freedom).
+            No blocking or waiting: threads don’t hold exclusive locks.
+            No ownership tracking: resources aren’t held, so no circular waits.
+            Even if a thread is suspended, others can continue progressing.
+        Progress is guaranteed for at least one thread (lock-freedom).
     
     Challenges of Lock-Free
         Complexity: Harder to write and reason about.
@@ -496,6 +600,38 @@
         CAS is typically a single CPU instruction (e.g., LOCK CMPXCHG on x86).
         It executes atomically even on multi-core CPUs — no locks needed.
 
+# why so we use AtomicCounter for a shared variable in CAS and not normal variable
+    The Root of the Problem — Shared Variable Updates Are Not Atomic
+        Let’s start simple.
+        If multiple threads update a normal variable like this:
+            int counter = 0;
+            void increment() {
+                counter++; // not atomic
+            }
+        It looks like one simple operation, but under the hood it’s three separate CPU-level steps:
+            Read counter from memory into a register
+            Add 1
+            Write the result back to memory
+        Now imagine two threads do this at the same time, the result might not have that extra 1
+        Using scynchronized can fix the problem but it takes resources puts lock, context switches and slows down the operation.
+    How AtomicInteger Fixes It
+        Internally, AtomicInteger maintains:
+            A volatile int value, and
+            Uses Unsafe.compareAndSwapInt() (or VarHandle CAS).
+        This achieves two critical things:
+            Volatile visibility → all threads see the most recent value.
+            Atomic CAS at CPU level → updates are indivisible.
+    What Happens Under the Hood
+        When you call:
+            counter.compareAndSet(oldVal, newVal);
+        The JVM invokes Unsafe.compareAndSwapInt() (or VarHandle.compareAndSet()).
+        This maps to the CPU instruction CMPXCHG (on x86 processors).
+        The CPU performs this atomically on the variable’s memory location.
+        Cache coherence protocols ensure all cores see the new value immediately.
+    If two threads read the same oldValue, only one CAS succeeds.
+    -> The loser retries until it succeeds.
+    -> No locking, no blocking, no lost updates.
+
 # Make a blog on speed difference between lock-based and lock-free mechanisms
     create 10000 threads with each thread incrementing the counter 10000 times in both approaches.
 
@@ -504,7 +640,7 @@
     How is Data Cached Locally?
         CPU Caches
             Modern CPUs have multiple layers of cache (L1, L2, L3).
-            When a thread is running on a CPU core accesses a variable, the CPU loads it into its core-local cache to speed up access.
+            When a thread running on a CPU core accesses a variable, the CPU loads it into its core-local cache to speed up access.
             Reads and writes happen mostly in this local cache, not directly in main memory.
         Java Memory Model (JMM) & Thread Caches
             Java threads can also have thread-local caches — the JMM allows JVM and CPU to cache variables per thread to optimize performance.
@@ -518,7 +654,7 @@
 
     How volatile Prevents Stale Reads
         The volatile keyword tells the JVM and CPU:
-        Always read and write this variable directly from/to main memory, not from caches.
+            Always read and write this variable directly from/to main memory, not from caches.
         Internally:
             When a thread writes to a volatile variable:
                 It flushes the updated value from its local cache to main memory.
@@ -559,6 +695,43 @@
             }
         }
         Now, running is always read from main memory, not from thread-local cache.
+
+    What volatile does NOT guarantee:
+        Atomicity of compound operations
+            Example:
+                volatile int count = 0;
+                count++; // not atomic (read-modify-write)
+            Two threads may overwrite each other’s increments.
+        Mutual exclusion
+            It doesn’t block other threads — multiple threads can read/write simultaneously.
+        Consistency for composite states
+            It can’t guarantee thread-safe updates of multiple variables together.
+    
+    When to use volatile
+        Use volatile when:
+            You have a single shared variable.
+            One thread writes, others read.
+            You need visibility, not atomicity.
+
+# why don't we use the volatile keyword directly on variable instead of AtomicInteger
+    First, what volatile does
+    When you mark a variable as volatile, it ensures visibility — i.e., when one thread updates the variable, other threads immediately see the new value.
+    But volatile does not make compound operations atomic.
+    For example:
+        volatile int count = 0;
+        public void increment() {
+            count++; // not atomic!
+        }
+    The count++ operation actually breaks down into 3 steps:
+        Read current value of count
+        Add 1 to it
+        Write new value back
+    If two threads run this simultaneously:
+        Both read count = 0
+        Both compute count + 1 = 1
+        Both write 1
+        Final value = 1, not 2 
+    So, volatile only ensures visibility, not atomicity.
 
 # Thread pool
     In Java, a ThreadPool is a managed collection of reusable threads used to execute tasks concurrently. Instead of creating a new thread for every task (which is expensive), a thread pool reuses existing threads, improving performance and resource utilization.
@@ -776,9 +949,6 @@
 
     Cleaning Up: remove()
         You should always call threadLocal.remove() when you're done — especially in:
-            Thread pools
-            Web servers
-            Async frameworks
-
+            Thread pools, Web servers, Async frameworks
         Why? Because threads are reused, and leftover values may leak across requests.
         threadLocal.remove();

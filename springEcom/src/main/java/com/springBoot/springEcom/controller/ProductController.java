@@ -1,7 +1,10 @@
 package com.springBoot.springEcom.controller;
+import com.springBoot.springEcom.BeanScopes.BeanPrototype;
+import com.springBoot.springEcom.BeanScopes.BeanRequest;
 import com.springBoot.springEcom.model.Product;
 import com.springBoot.springEcom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +20,27 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    @Lazy
+    private BeanRequest beanRequest;
+
+    @Autowired
+    @Lazy
+    private BeanPrototype beanPrototype;
+
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(){
+        beanPrototype.call();
+        beanPrototype.call();
+        beanRequest.call();
+        beanRequest.call();
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") int postId){
+        beanPrototype.call();
+        beanRequest.call();
         return new ResponseEntity<>(productService.getProductById(postId),HttpStatus.OK);
     }
 

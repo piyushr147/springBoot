@@ -3,6 +3,7 @@ package com.spring.springJPA.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,16 +27,19 @@ public class Student {
     private int id;
 
     @Column(nullable = false)
+    @NotBlank
     private String name;
 
     private String location;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    //without using spring will create identity_id by itself but still good to mention.
+    @JoinColumn(name = "identity_id", referencedColumnName = "id")
     @JsonIgnoreProperties("student")
     private Identity identity;
 
     @Setter(AccessLevel.NONE)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JsonBackReference
     @JoinTable(name = "STUDENT_COURSE",joinColumns = @JoinColumn(name = "STUDENT_ID"),inverseJoinColumns = @JoinColumn(name = "COURSE_ID"))
     private List<Course> courses = new ArrayList<>();

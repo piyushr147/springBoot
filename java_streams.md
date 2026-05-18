@@ -92,7 +92,7 @@
         public interface List<E> extends Collection<E> { ... }
     So if you do this:
     List<String> names = new ArrayList<>();
-    names.stream(); // 💥 Totally valid!
+    names.stream(); // Totally valid!
     You’re calling the default method stream() from the Collection interface.
 
     Under the Hood: How .stream() Works

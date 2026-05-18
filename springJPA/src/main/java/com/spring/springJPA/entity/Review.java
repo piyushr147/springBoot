@@ -32,7 +32,7 @@ public class Review implements Serializable {
     private int rating;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "course_id", nullable = false)
     @JsonBackReference
     private Course course;
 
