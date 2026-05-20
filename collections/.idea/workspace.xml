@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4069ddd3-3df7-40d3-8af1-482ae2f7f694" name="Changes" comment="notes updated">
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/Multithreading_concurrency.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/Notes.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/src/Thread1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Multithreading_concurrency/src/Thread2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/collections.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main$Student.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections4.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections5.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections6.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collections/Collections7.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/customHashMap/SimpleHashMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/enums/EnumSample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/exception/Exception1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/immutable/Immutable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/innerClass/InnerClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/Implement.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/Implement2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/InterfaceA.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/InterfaceB.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/InterfaceC.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/InterfaceD.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interfaces/InterfaceE.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/linkedList/Code.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/MonitorLockExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/Threading1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/Threading2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/forkJoinPool/AdvanceMergeSort.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/forkJoinPool/ForkJoinPoolExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/forkJoinPool/NormalVsForkJoinSorting.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/lockFreeMechanism/LockFreeExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/lockFreeMechanism/SharedResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/producerConsumer/ProducerConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/producerConsumer/SharedResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/readWriteLock/ReadWriteLockExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/readWriteLock/SharedResource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/stampedLock/GpsTracker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/stampedLock/StampedLockExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/threadLocal/ThreadLocalExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/threadPool/FixedThreadPoolExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/multiThreading/threadPool/ThreadPoolExecutorExample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sorting/Car.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sorting/Sorting1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/streams/Streams1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/generics.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Box.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Box2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Container.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/NumberContainer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Pair.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../generics/src/Test2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java.md" beforeDir="false" afterPath="$PROJECT_DIR$/../java.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java_interview.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../java_multithreading.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;piyushr147&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/piyushr147/springBoot.git&quot;,
+    &quot;accountId&quot;: &quot;1b958229-6e4a-48e2-9947-6524e4b6ff82&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2wjLtu44P9KtgIGN4SRzNLNtldQ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ArrayListA.executor": "Run",
+    "Application.Collection5.executor": "Run",
+    "Application.Collections1.executor": "Run",
+    "Application.Collections2.executor": "Run",
+    "Application.Collections3.executor": "Run",
+    "Application.Collections4.executor": "Run",
+    "Application.Collections5.executor": "Run",
+    "Application.Exception1.executor": "Run",
+    "Application.FixedThreadPoolExample.executor": "Run",
+    "Application.ForkJoinPoolExample.executor": "Run",
+    "Application.LockFreeExample.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.NormalVsForkJoinSorting.executor": "Run",
+    "Application.ProducerConsumer.executor": "Run",
+    "Application.ReadWriteLockExample.executor": "Run",
+    "Application.Sorting1.executor": "Run",
+    "Application.StampedLockExample.executor": "Run",
+    "Application.Streams1.executor": "Run",
+    "Application.ThreadPoolExecutorExample.executor": "Run",
+    "Application.Threading1.executor": "Run",
+    "Application.Threading2.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Piyush.Rawat/development/java/collections",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/Piyush.Rawat/development/java/collections/src/Main.java",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="multiThreading.readWriteLock" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4069ddd3-3df7-40d3-8af1-482ae2f7f694" name="Changes" comment="" />
+      <created>1746550256156</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746550256156</updated>
+      <workItem from="1746550257333" duration="3030000" />
+      <workItem from="1746683419152" duration="7677000" />
+      <workItem from="1746869543221" duration="10195000" />
+      <workItem from="1747027974736" duration="1949000" />
+      <workItem from="1747137612316" duration="46000" />
+      <workItem from="1747203599712" duration="1790000" />
+      <workItem from="1747210056594" duration="6882000" />
+      <workItem from="1747229721506" duration="3129000" />
+      <workItem from="1747464030972" duration="9933000" />
+      <workItem from="1747897483094" duration="23714000" />
+      <workItem from="1748172581753" duration="1606000" />
+      <workItem from="1748325825029" duration="8168000" />
+      <workItem from="1749120372712" duration="27096000" />
+      <workItem from="1749639465735" duration="418000" />
+      <workItem from="1749879779009" duration="7353000" />
+      <workItem from="1750078281712" duration="3006000" />
+      <workItem from="1750233120755" duration="1856000" />
+      <workItem from="1750830433362" duration="1920000" />
+      <workItem from="1751710887900" duration="7519000" />
+      <workItem from="1751794172488" duration="3711000" />
+      <workItem from="1752303904200" duration="778000" />
+      <workItem from="1754562198162" duration="3289000" />
+      <workItem from="1755002398740" duration="1854000" />
+      <workItem from="1755150820757" duration="787000" />
+      <workItem from="1755522663821" duration="592000" />
+      <workItem from="1755584750249" duration="153000" />
+      <workItem from="1755584929603" duration="2942000" />
+      <workItem from="1755757282954" duration="1197000" />
+      <workItem from="1755883688803" duration="1885000" />
+      <workItem from="1756286824727" duration="1899000" />
+      <workItem from="1756790484278" duration="695000" />
+      <workItem from="1758008719908" duration="1977000" />
+      <workItem from="1758540096091" duration="601000" />
+      <workItem from="1758781910090" duration="3165000" />
+      <workItem from="1759124924325" duration="2068000" />
+    </task>
+    <task id="LOCAL-00001" summary="notes updated">
+      <option name="closed" value="true" />
+      <created>1754562318071</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1754562318071</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="notes updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="notes updated" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>170</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
